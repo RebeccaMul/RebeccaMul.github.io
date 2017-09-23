@@ -11,7 +11,7 @@ body {
     }
 }
 
-.Content {
+#center {
 	margin: auto;
     	width: 50%;
 	align-content:center;
