@@ -11,7 +11,9 @@ body {
     }
 }
 
-Content {
+#Content {
+	margin: auto;
+    	width: 50%;
 	align-content:center;
 	text-align:center;
     	background-color:white; 
