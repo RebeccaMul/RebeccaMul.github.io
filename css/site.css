@@ -43,3 +43,19 @@
 .li {
 	clear: both;
 }
+
+a:link {
+    color: #5e9ca0;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: red;
+}
+
+a:active {
+    color: cadetblue;
+}
