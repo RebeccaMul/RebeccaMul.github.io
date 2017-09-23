@@ -1,0 +1,45 @@
+.body {
+    padding-top: 5px;
+    padding-bottom: 10px;
+    background-color:#D6D6D0;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .body-content {
+        padding: 0;
+    }
+}
+
+.Content {
+	align-content:center;
+	text-align:center;
+    	background-color:white; 
+    	border-color: #3d4547;
+    	border-width:medium;
+    	border-radius:5px 5px 5px 5px;
+    	padding:5px 5px 5px 5px;
+	max-width:60%;
+	min-width:40%;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+	color: #3B5C58; 
+	font-family:Georgia
+}
+
+.h1 {
+	color: #5e9ca0; 
+	text-shadow: #3d4547 1px 1px 2px;
+}
+
+.ol {
+	list-style: none; 
+	font-size: 20px; 
+	line-height: 32px; 
+	font-weight: bold; 
+	color: #3d4547; 
+	font-family:helvetica"
+}
+
+.li {
+	clear: both;
+}
