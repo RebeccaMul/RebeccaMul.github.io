@@ -8,54 +8,70 @@
 </head>
 <body>
   <form id="supabaseForm">
-    <h2>🧺 Wardrobe Entry</h2>
+    <h2>Becka’s Digital Wardrobe ✨</h2>
 
     <label for="name">Item Name</label>
     <input type="text" name="name" required>
 
-    <label for="subcategory">Subcategory</label>
-    <input type="text" name="subcategory">
-
     <label for="brand">Brand</label>
     <input type="text" name="brand">
 
-    <label for="score">Score (1–10)</label>
+    <label for="score">Score</label>
     <input type="number" name="score" min="1" max="10">
 
-    <label>Favourite?</label>
+    <label>Fav?</label>
     <div class="checkbox-group">
-      <label><input type="checkbox" name="fav" value="true"> Yes</label>
+      <label><input type="checkbox" name="fav" value="true"> Aye</label>
     </div>
 
     <label>Colour(s)</label>
     <div class="checkbox-group">
       <label><input type="checkbox" name="colour" value="Black"> Black</label>
       <label><input type="checkbox" name="colour" value="White"> White</label>
+      <label><input type="checkbox" name="colour" value="Brown"> Brown</label>
       <label><input type="checkbox" name="colour" value="Red"> Red</label>
-      <label><input type="checkbox" name="colour" value="Blue"> Blue</label>
+      <label><input type="checkbox" name="colour" value="Orange"> Orange</label>
+      <label><input type="checkbox" name="colour" value="Yellow"> Yellow</label>
       <label><input type="checkbox" name="colour" value="Green"> Green</label>
+      <label><input type="checkbox" name="colour" value="Blue"> Blue</label>
+      <label><input type="checkbox" name="colour" value="Teal"> Teal</label>
+      <label><input type="checkbox" name="colour" value="Navy"> Navy</label>
+      <label><input type="checkbox" name="colour" value="Purple"> Purple</label>
+      <label><input type="checkbox" name="colour" value="Burgundy"> Burgundy</label>
+      <label><input type="checkbox" name="colour" value="Khaki"> Khaki</label>
+      <label><input type="checkbox" name="colour" value="Silver"> Silver</label>
+      <label><input type="checkbox" name="colour" value="Gold"> Gold</label>
+      <label><input type="checkbox" name="colour" value="Grey"> Grey</label>
       <label><input type="checkbox" name="colour" value="Pink"> Pink</label>
+      <label><input type="checkbox" name="colour" value="Light Purple"> Light Purple</label>
+      <label><input type="checkbox" name="colour" value="Light Blue"> Light Blue</label>
+      <label><input type="checkbox" name="colour" value="Light Green"> Light Green</label>
+      <label><input type="checkbox" name="colour" value="Light Yellow"> Light Yellow</label>
       <label><input type="checkbox" name="colour" value="Other"> Other</label>
     </div>
 
     <label for="pattern">Pattern</label>
     <select name="pattern">
       <option value="">-- Select --</option>
-      <option value="Plain">Plain</option>
-      <option value="Striped">Striped</option>
+      <option value="Animal">Animal</option>
+      <option value="Checked">Checked</option>
+      <option value="Checkerboard">Checkerboard</option>
       <option value="Floral">Floral</option>
-      <option value="Graphic">Graphic</option>
-      <option value="Other">Other</option>
+      <option value="Striped">Striped</option>
+      <option value="Polka Dot">Polka Dot</option>
+      <option value="Ornamental">Ornamental</option>
     </select>
 
     <label for="style">Style</label>
     <select name="style">
       <option value="">-- Select --</option>
+      <option value="Alt">Alt</option>
+      <option value="Boho">Boho</option>
+      <option value="Witchy">Witchy</option>
+      <option value="Retro">Retro</option>
       <option value="Casual">Casual</option>
-      <option value="Smart">Smart</option>
-      <option value="Vintage">Vintage</option>
-      <option value="Alternative">Alternative</option>
-      <option value="Other">Other</option>
+      <option value="Formal">Formal</option>
+      <option value="General">General</option>
     </select>
 
     <label for="zone">Zone</label>
@@ -66,6 +82,9 @@
       <option value="Work">Work</option>
       <option value="Special">Special</option>
     </select>
+
+    <label for="subcategory">Subcategory</label>
+    <input type="text" name="subcategory">
 
     <label for="photo">Photo</label>
     <input type="file" name="photo" accept="image/*" capture="environment" required>
