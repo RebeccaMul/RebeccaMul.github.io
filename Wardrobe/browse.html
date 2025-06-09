@@ -36,7 +36,11 @@
             </div>
           `).join('');
         } else {
-          itemsContainer.innerHTML = '<div class="item-card">Nothing lingers here… yet 🕯️</div>';
+          itemsContainer.innerHTML = `
+  <div class="item-card empty">
+    Nothing lingers here… yet 🕯️
+  </div>
+`;
         }
 
         loader.style.opacity = '0';
