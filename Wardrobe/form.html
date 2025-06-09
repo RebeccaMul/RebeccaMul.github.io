@@ -120,14 +120,13 @@
       <option value="Other">Other</option>
     </select>
 
-	<label for="subcategory">Subcategory</label>
-	<select name="subcategory" id="subcategory">
-  	<option value="">-- Select --</option>
-	</select>
+<select name="subcategory" id="subcategory" disabled>
+  <option value="">-- Select --</option>
+</select>
 
 
     <label for="photo">Photo</label>
-    <input type="file" name="photo" accept="image/*" capture="environment" required>
+    <input type="file" name="photo" accept="image/*" required>
 
     <button type="submit">Submit</button>
   </form>
@@ -154,23 +153,23 @@
   const subcategorySelect = document.getElementById('subcategory');
 
   categorySelect.addEventListener('change', () => {
-    const selectedCategory = categorySelect.value;
-    const options = categoryToSubcategories[selectedCategory] || [];
+  const selectedCategory = categorySelect.value;
+  const options = categoryToSubcategories[selectedCategory] || [];
 
-    // Clear existing options
-    subcategorySelect.innerHTML = '<option value="">-- Select --</option>';
+  // Clear existing options and reset
+  subcategorySelect.innerHTML = '<option value="">-- Select --</option>';
+  subcategorySelect.disabled = true;
 
-    // Populate new options
+  if (options.length > 0) {
     options.forEach(sub => {
       const opt = document.createElement('option');
       opt.value = sub;
       opt.textContent = sub;
       subcategorySelect.appendChild(opt);
     });
-
-    // Optional: disable if no options
-    subcategorySelect.disabled = options.length === 0;
-  });
+    subcategorySelect.disabled = false;
+  }
+});
 
     document.getElementById('supabaseForm').addEventListener('submit', async function (e) {
       e.preventDefault();
