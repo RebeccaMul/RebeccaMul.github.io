@@ -1,13 +1,50 @@
-<div id="supabaseItems"></div>
-<script>
-  fetch('https://viaecfkrsnraazgsmdet.supabase.co', {
-    headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k' }
-  })
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById('supabaseItems');
-    container.innerHTML = data.map(item => `
-      <div><img src="${item.image_url}" alt="${item.item_name}" width="100"/><br>${item.item_name}</div>
-    `).join('');
-  });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wardrobe Grid</title>
+  <link rel="stylesheet" href="styles.css" />
+  </head>
+<body>
+  <div id="loader">
+    <div class="wardrobe">
+      <div class="dust"></div>
+    </div>
+    <div class="summoning-text">Summoning contents…</div>
+  </div>
+
+  <div id="supabaseItems"></div>
+
+  <script>
+    const itemsContainer = document.getElementById('supabaseItems');
+    const loader = document.getElementById('loader');
+
+    fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
+      headers: {
+        apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.length) {
+          itemsContainer.innerHTML = data.map(item => `
+            <div class="item-card">
+              <img src="${item.photo}" alt="${item.name}" />
+              <div>${item.name}</div>
+            </div>
+          `).join('');
+        } else {
+          itemsContainer.innerHTML = '<div class="item-card">Nothing lingers here… yet 🕯️</div>';
+        }
+
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          itemsContainer.style.display = 'grid';
+        }, 1000);
+      });
+  </script>
+</body>
+</html>
