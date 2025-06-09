@@ -108,8 +108,11 @@
       <option value="Other">Other</option>
     </select>
 
-    <label for="subcategory">Subcategory</label>
-    <input type="text" name="subcategory" id="subcategory">
+	<label for="subcategory">Subcategory</label>
+	<select name="subcategory" id="subcategory">
+  	<option value="">-- Select --</option>
+	</select>
+
 
     <label for="photo">Photo</label>
     <input type="file" name="photo" accept="image/*" capture="environment" required>
@@ -118,6 +121,45 @@
   </form>
 
   <script>
+
+ const categoryToSubcategories = {
+    Outerwear: [
+      "Blazers", "Cardigans", "Coats", "Fur Coats", "Hoodies",
+      "Jackets", "Kimonos", "Denim Jackets", "Leather Jackets", "Trench Coats", "Parkas"
+    ],
+    Dresses: [
+      "Day Dress", "Formal Dress", "Maxi Dress", "Party Dress", "Pinafore", "T-Shirt Dress"
+    ],
+    Skirts: ["Mini Skirt", "Midi Skirt", "Maxi Skirt"],
+    Shoes: ["Boots", "Heels", "Trainers", "Sandals"],
+    Tights: ["Fishnets", "Mesh Leggings", "Tights", "Stockings"],
+    Tops: ["Bralette", "Cami", "Fancy", "Tank Tops", "T-Shirts", "Long Sleeve", "Mesh"],
+    Trousers: ["Jeans", "Shorts", "Leggings", "Trousers"],
+    Other: ["Bags", "Hats", "Jammies", "Scarves", "Swimwear"]
+  };
+
+  const categorySelect = document.getElementById('category');
+  const subcategorySelect = document.getElementById('subcategory');
+
+  categorySelect.addEventListener('change', () => {
+    const selectedCategory = categorySelect.value;
+    const options = categoryToSubcategories[selectedCategory] || [];
+
+    // Clear existing options
+    subcategorySelect.innerHTML = '<option value="">-- Select --</option>';
+
+    // Populate new options
+    options.forEach(sub => {
+      const opt = document.createElement('option');
+      opt.value = sub;
+      opt.textContent = sub;
+      subcategorySelect.appendChild(opt);
+    });
+
+    // Optional: disable if no options
+    subcategorySelect.disabled = options.length === 0;
+  });
+
     document.getElementById('supabaseForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = e.target;
