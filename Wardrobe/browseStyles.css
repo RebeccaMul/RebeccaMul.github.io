@@ -88,10 +88,14 @@
       box-shadow: 0 0 5px rgba(255,255,255,0.05);
     }
 
-    .item-card img {
-      width: 100%;
-      border-radius: 8px;
-    }
+.item-card img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
 
 .item-card.empty {
   grid-column: 1 / -1;
