@@ -103,6 +103,16 @@ button {
   }
 }
 
+.form-header-img {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  object-fit: cover;
+  display: block;
+}
+
+
 .snowflake {
   color: #fff;
   font-size: 1em;
