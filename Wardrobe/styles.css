@@ -1,0 +1,57 @@
+body {
+  font-family: sans-serif;
+  background-color: darkslategray;
+  padding: 2rem;
+}
+
+form {
+  max-width: 700px;
+  margin: auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-top: 1.2rem;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+input[type="file"] {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 0.3rem;
+}
+
+.checkbox-group {
+  margin-top: 0.3rem;
+}
+
+.checkbox-group label {
+  display: inline-block;
+  margin-right: 1rem;
+  font-weight: normal;
+}
+
+button {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: darkslategray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}

@@ -2,96 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wardrobe Entry</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Becka’s Digital Wardrobe ✨</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-light p-4">
-  <div class="container">
-    <h2 class="mb-4">🧺 Wardrobe Entry</h2>
-    <form id="supabaseForm" class="row g-3">
+<body>
+  <form id="supabaseForm">
+    <h2>🧺 Wardrobe Entry</h2>
 
-      <div class="col-md-6">
-        <label for="name" class="form-label">Item Name</label>
-        <input type="text" class="form-control" name="name" required>
-      </div>
+    <label for="name">Item Name</label>
+    <input type="text" name="name" required>
 
-      <div class="col-md-6">
-        <label for="subcategory" class="form-label">Subcategory</label>
-        <input type="text" class="form-control" name="subcategory">
-      </div>
+    <label for="subcategory">Subcategory</label>
+    <input type="text" name="subcategory">
 
-      <div class="col-md-6">
-        <label for="brand" class="form-label">Brand</label>
-        <input type="text" class="form-control" name="brand">
-      </div>
+    <label for="brand">Brand</label>
+    <input type="text" name="brand">
 
-      <div class="col-md-6">
-        <label for="score" class="form-label">Score (1–10)</label>
-        <input type="number" class="form-control" name="score" min="1" max="10">
-      </div>
+    <label for="score">Score (1–10)</label>
+    <input type="number" name="score" min="1" max="10">
 
-      <div class="col-12">
-        <label class="form-label">Favourite?</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="fav" value="true">
-          <label class="form-check-label">Yes</label>
-        </div>
-      </div>
+    <label>Favourite?</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="fav" value="true"> Yes</label>
+    </div>
 
-      <div class="col-12">
-        <label class="form-label">Colour(s)</label><br>
-        <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="colour" value="Black"><label class="form-check-label">Black</label></div>
-        <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="colour" value="White"><label class="form-check-label">White</label></div>
-        <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="colour" value="Red"><label class="form-check-label">Red</label></div>
-        <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="colour" value="Blue"><label class="form-check-label">Blue</label></div>
-        <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="colour" value="Other"><label class="form-check-label">Other</label></div>
-      </div>
+    <label>Colour(s)</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="colour" value="Black"> Black</label>
+      <label><input type="checkbox" name="colour" value="White"> White</label>
+      <label><input type="checkbox" name="colour" value="Red"> Red</label>
+      <label><input type="checkbox" name="colour" value="Blue"> Blue</label>
+      <label><input type="checkbox" name="colour" value="Green"> Green</label>
+      <label><input type="checkbox" name="colour" value="Pink"> Pink</label>
+      <label><input type="checkbox" name="colour" value="Other"> Other</label>
+    </div>
 
-      <div class="col-md-4">
-        <label for="pattern" class="form-label">Pattern</label>
-        <select class="form-select" name="pattern">
-          <option value="">-- Select --</option>
-          <option>Plain</option>
-          <option>Striped</option>
-          <option>Floral</option>
-          <option>Graphic</option>
-          <option>Other</option>
-        </select>
-      </div>
+    <label for="pattern">Pattern</label>
+    <select name="pattern">
+      <option value="">-- Select --</option>
+      <option value="Plain">Plain</option>
+      <option value="Striped">Striped</option>
+      <option value="Floral">Floral</option>
+      <option value="Graphic">Graphic</option>
+      <option value="Other">Other</option>
+    </select>
 
-      <div class="col-md-4">
-        <label for="style" class="form-label">Style</label>
-        <select class="form-select" name="style">
-          <option value="">-- Select --</option>
-          <option>Casual</option>
-          <option>Smart</option>
-          <option>Vintage</option>
-          <option>Alternative</option>
-        </select>
-      </div>
+    <label for="style">Style</label>
+    <select name="style">
+      <option value="">-- Select --</option>
+      <option value="Casual">Casual</option>
+      <option value="Smart">Smart</option>
+      <option value="Vintage">Vintage</option>
+      <option value="Alternative">Alternative</option>
+      <option value="Other">Other</option>
+    </select>
 
-      <div class="col-md-4">
-        <label for="zone" class="form-label">Zone</label>
-        <select class="form-select" name="zone">
-          <option value="">-- Select --</option>
-          <option>Home</option>
-          <option>Work</option>
-          <option>Out</option>
-          <option>Special</option>
-        </select>
-      </div>
+    <label for="zone">Zone</label>
+    <select name="zone">
+      <option value="">-- Select --</option>
+      <option value="Home">Home</option>
+      <option value="Out">Out</option>
+      <option value="Work">Work</option>
+      <option value="Special">Special</option>
+    </select>
 
-      <div class="col-12">
-        <label for="photo" class="form-label">Photo</label>
-        <input type="file" class="form-control" name="photo" accept="image/*" capture="environment" required>
-      </div>
+    <label for="photo">Photo</label>
+    <input type="file" name="photo" accept="image/*" capture="environment" required>
 
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-      </div>
-    </form>
-  </div>
+    <button type="submit">Submit</button>
+  </form>
 
   <script>
     document.getElementById('supabaseForm').addEventListener('submit', async function (e) {
@@ -99,7 +79,6 @@
       const form = e.target;
       const formData = new FormData(form);
 
-      // Upload photo to Cloudinary
       const file = formData.get('photo');
       const cloudForm = new FormData();
       cloudForm.append('file', file);
@@ -111,10 +90,8 @@
       });
       const cloudinaryData = await cloudinaryRes.json();
 
-      // Format colour as array
-      const colours = [...form.querySelectorAll('input[name=\"colour\"]:checked')].map(cb => cb.value);
+      const colours = [...form.querySelectorAll('input[name="colour"]:checked')].map(cb => cb.value);
 
-      // Supabase insert
       await fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
         method: 'POST',
         headers: {
