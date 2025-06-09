@@ -1,0 +1,13 @@
+<div id="supabaseItems"></div>
+<script>
+  fetch('YOUR_SUPABASE_API_ENDPOINT', {
+    headers: { 'apikey': 'YOUR_SUPABASE_ANON_KEY' }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('supabaseItems');
+    container.innerHTML = data.map(item => `
+      <div><img src="${item.image_url}" alt="${item.item_name}" width="100"/><br>${item.item_name}</div>
+    `).join('');
+  });
+</script>

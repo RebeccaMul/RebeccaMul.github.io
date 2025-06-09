@@ -1,0 +1,39 @@
+<form id="supabaseForm">
+  <h2>Wardrobe Entry (Supabase + Cloudinary)</h2>
+  <input type="text" name="itemName" placeholder="Item Name" required />
+  <input type="text" name="brand" placeholder="Brand" />
+  <input type="file" name="photo" accept="image/*" capture="environment" required />
+  <button type="submit">Submit</button>
+</form>
+<script>
+  document.getElementById('supabaseForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    // Upload to Cloudinary
+    const file = formData.get('photo');
+    const cloudForm = new FormData();
+    cloudForm.append('file', file);
+    cloudForm.append('upload_preset', 'YOUR_UPLOAD_PRESET');
+
+    const cloudinaryRes = await fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
+      method: 'POST',
+      body: cloudForm,
+    });
+    const cloudinaryData = await cloudinaryRes.json();
+
+    // Save record to Supabase
+    await fetch('YOUR_SUPABASE_API_ENDPOINT', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': 'YOUR_SUPABASE_ANON_KEY' },
+      body: JSON.stringify({
+        item_name: formData.get('itemName'),
+        brand: formData.get('brand'),
+        image_url: cloudinaryData.secure_url
+      })
+    });
+    alert('Submitted to Supabase');
+    form.reset();
+  });
+</script>
