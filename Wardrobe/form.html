@@ -17,7 +17,18 @@
     <input type="text" name="brand">
 
     <label for="score">Score</label>
-    <input type="number" name="score" min="1" max="10">
+    <div class="radio-group">
+      <label><input type="radio" name="score" value="1"> 1</label>
+      <label><input type="radio" name="score" value="2"> 2</label>
+      <label><input type="radio" name="score" value="3"> 3</label>
+      <label><input type="radio" name="score" value="4"> 4</label>
+      <label><input type="radio" name="score" value="5"> 5</label>
+      <label><input type="radio" name="score" value="6"> 6</label>
+      <label><input type="radio" name="score" value="7"> 7</label>
+      <label><input type="radio" name="score" value="8"> 8</label>
+      <label><input type="radio" name="score" value="9"> 9</label>
+      <label><input type="radio" name="score" value="10"> 10</label>
+    </div>
 
     <label>Fav?</label>
     <div class="checkbox-group">
@@ -25,7 +36,7 @@
     </div>
 
     <label>Colour(s)</label>
-    <div class="checkbox-group">
+    <div class="checkbox-grid">
       <label><input type="checkbox" name="colour" value="Black"> Black</label>
       <label><input type="checkbox" name="colour" value="White"> White</label>
       <label><input type="checkbox" name="colour" value="Brown"> Brown</label>
@@ -74,17 +85,31 @@
       <option value="General">General</option>
     </select>
 
-    <label for="zone">Zone</label>
+    <label for="zone">Zone (optional)</label>
     <select name="zone">
+      <option value="">N/A</option>
+      <option value="Band Merch">Band Merch</option>
+      <option value="Memorabilia">Memorabilia</option>
+      <option value="Halloween">Halloween</option>
+      <option value="Christmas">Christmas</option>
+      <option value="Danger Zone">Danger Zone</option>
+    </select>
+
+    <label for="category">Category</label>
+    <select name="category" id="category">
       <option value="">-- Select --</option>
-      <option value="Home">Home</option>
-      <option value="Out">Out</option>
-      <option value="Work">Work</option>
-      <option value="Special">Special</option>
+      <option value="Dresses">Dresses</option>
+      <option value="Skirts">Skirts</option>
+      <option value="Shoes">Shoes</option>
+      <option value="Tights">Tights</option>
+      <option value="Tops">Tops</option>
+      <option value="Trousers">Trousers</option>
+      <option value="Outerwear">Outerwear</option>
+      <option value="Other">Other</option>
     </select>
 
     <label for="subcategory">Subcategory</label>
-    <input type="text" name="subcategory">
+    <input type="text" name="subcategory" id="subcategory">
 
     <label for="photo">Photo</label>
     <input type="file" name="photo" accept="image/*" capture="environment" required>
@@ -110,6 +135,7 @@
       const cloudinaryData = await cloudinaryRes.json();
 
       const colours = [...form.querySelectorAll('input[name="colour"]:checked')].map(cb => cb.value);
+      const score = form.querySelector('input[name="score"]:checked')?.value;
 
       await fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
         method: 'POST',
@@ -121,12 +147,13 @@
           name: formData.get('name'),
           subcategory: formData.get('subcategory'),
           brand: formData.get('brand'),
-          score: parseInt(formData.get('score')) || null,
+          score: score ? parseInt(score) : null,
           fav: formData.get('fav') === 'true',
           colour: colours,
           pattern: formData.get('pattern'),
           style: formData.get('style'),
           zone: formData.get('zone'),
+          category: formData.get('category'),
           photo: cloudinaryData.secure_url
         })
       });
