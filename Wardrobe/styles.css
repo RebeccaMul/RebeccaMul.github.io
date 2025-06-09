@@ -56,14 +56,36 @@ button {
   border-radius: 5px;
 }
 
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.4rem;
-    }
     .radio-group {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-top: 0.3rem;
     }
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+
+.checkbox-grid label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .checkbox-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem 0.8rem;
+  }
+
+  .checkbox-grid label {
+    font-size: 0.9rem;
+  }
+}
+
