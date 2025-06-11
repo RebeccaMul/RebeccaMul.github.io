@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wardrobe Grid</title>
   <link rel="stylesheet" href="styles.css" />
-  </head>
+</head>
+
 <body>
   <div id="loader">
     <div class="wardrobe">
@@ -36,19 +38,19 @@
             </div>
           `).join('');
         } else {
-          itemsContainer.innerHTML = `
-  <div class="item-card empty">
-    Nothing lingers here… yet 🕯️
-  </div>
-`;
+          itemsContainer.innerHTML = 
+          `<div class="item-card empty">
+            Nothing lingers here… yet 🕯️
+          </div>`;
         }
 
         loader.style.opacity = '0';
         setTimeout(() => {
           loader.style.display = 'none';
-          itemsContainer.style.display = 'grid';
+          itemsContainer.style.opacity = '1';
         }, 1000);
       });
   </script>
 </body>
+
 </html>
