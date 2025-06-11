@@ -19,42 +19,82 @@
   <h2 class="wardrobe-title">Becka’s Digital Wardrobe ✨</h2>
   <div id="supabaseItems"></div>
 
-  <script>
-    const itemsContainer = document.getElementById('supabaseItems');
-    const loader = document.getElementById('loader');
+  <div class="pagination">
+  <button id="prevPage" disabled>⟵ Prev</button>
+  <span id="pageIndicator"># 1</span>
+  <button id="nextPage">Next ⟶</button>
+</div>
 
-    fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
-      headers: {
-        apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.length) {
-          itemsContainer.innerHTML = data.map(item => `
-        <div class="item-card">
-          <img src="${item.photo}" alt="${item.name}" />
-          <div class="item-brand">${item.category}</div>
-          <div class="item-name">${item.brand}</div>
-        </div>
-      `).join('');
-          itemsContainer.style.display = 'grid';
-        } else {
-          itemsContainer.innerHTML =
-            `<div class="item-card empty">
-            Nothing lingers here… yet 🕯️
-          </div>`;
-        }
+<script>
+  const itemsContainer = document.getElementById('supabaseItems');
+  const loader = document.getElementById('loader');
+  const pageIndicator = document.getElementById('pageIndicator');
+  const prevButton = document.getElementById('prevPage');
+  const nextButton = document.getElementById('nextPage');
+  const title = document.querySelector('.wardrobe-title');
 
-        setTimeout(() => {
-          loader.style.display = 'none';
-          itemsContainer.style.opacity = '1';
-          itemsContainer.style.display = 'grid';
-          document.querySelector('.wardrobe-title').style.opacity = '1';
-        }, 1000);
-      });
-  </script>
+  let allItems = [];
+  let currentPage = 1;
+  const itemsPerPage = 9;
+
+  fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
+    headers: {
+      apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.length) {
+      allItems = data;
+      renderPage(currentPage);
+    } else {
+      itemsContainer.innerHTML = `
+        <div class="item-card empty">
+          Nothing lingers here… yet 🕯️
+        </div>`;
+    }
+
+    setTimeout(() => {
+      loader.style.display = 'none';
+      itemsContainer.style.opacity = '1';
+      title.style.opacity = '1';
+    }, 1000);
+  });
+
+  function renderPage(page) {
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = allItems.slice(start, end);
+
+    itemsContainer.innerHTML = pageItems.map(item => `
+      <div class="item-card">
+        <img src="${item.photo}" alt="${item.name}" />
+        <div class="item-name">${item.name}</div>
+        <div class="item-brand">${item.brand}</div>
+      </div>
+    `).join('');
+
+    pageIndicator.textContent = `Page ${currentPage}`;
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = end >= allItems.length;
+  }
+
+  prevButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderPage(currentPage);
+    }
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentPage * itemsPerPage < allItems.length) {
+      currentPage++;
+      renderPage(currentPage);
+    }
+  });
+</script>
+
 </body>
 
 </html>

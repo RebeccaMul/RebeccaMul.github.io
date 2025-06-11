@@ -127,6 +127,33 @@ body {
   font-style: italic;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem auto;
+  color: #eee;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.pagination button {
+  background-color: darkslategray;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+
 @keyframes fadeInGrid {
   from {
     opacity: 0;
