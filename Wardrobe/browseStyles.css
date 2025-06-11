@@ -114,13 +114,13 @@ body {
   opacity: 0.7;
 }
 
-.item-name {
+.item-brand {
   font-size: 1rem;
   font-weight: bold;
   margin-top: 0.5rem;
 }
 
-.item-brand {
+.item-category {
   font-size: 0.85rem;
   color: #ccc;
   margin-top: 0.2rem;
