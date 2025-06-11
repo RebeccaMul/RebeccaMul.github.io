@@ -35,8 +35,8 @@
           itemsContainer.innerHTML = data.map(item => `
         <div class="item-card">
           <img src="${item.photo}" alt="${item.name}" />
-          <div class="item-name">${item.name}</div>
-          <div class="item-brand">${item.brand}</div>
+          <div class="item-brand">${item.category}</div>
+          <div class="item-name">${item.brand}</div>
         </div>
       `).join('');
           itemsContainer.style.display = 'grid';
