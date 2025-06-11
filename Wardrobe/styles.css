@@ -145,6 +145,7 @@ button {
   z-index: 2;
   opacity: 0;
   animation: fadeInTitle 1s ease forwards;
+  font-family: "Times New Roman", Times, serif;
 }
 
 @media (max-width: 480px) {
