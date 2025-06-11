@@ -166,7 +166,6 @@
       const selectedCategory = categorySelect.value;
       const options = categoryToSubcategories[selectedCategory] || [];
 
-      // Clear existing options and reset
       subcategorySelect.innerHTML = '<option value="">-- Select --</option>';
       subcategorySelect.disabled = true;
 
@@ -181,49 +180,61 @@
       }
     });
 
-    document.getElementById('supabaseForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
+document.getElementById('supabaseForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-      const file = formData.get('photo');
-      const cloudForm = new FormData();
-      cloudForm.append('file', file);
-      cloudForm.append('upload_preset', 'Wardrobe');
+  const form = e.target;
+  const formData = new FormData(form);
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true; 
+  submitButton.textContent = 'Submitting…';
 
-      const cloudinaryRes = await fetch('https://api.cloudinary.com/v1_1/dxehyqwbc/image/upload', {
-        method: 'POST',
-        body: cloudForm,
-      });
-      const cloudinaryData = await cloudinaryRes.json();
+  try {
+    const file = formData.get('photo');
+    const cloudForm = new FormData();
+    cloudForm.append('file', file);
+    cloudForm.append('upload_preset', 'Wardrobe');
 
-      const colours = [...form.querySelectorAll('input[name="colour"]:checked')].map(cb => cb.value);
-      const score = form.querySelector('input[name="score"]:checked')?.value;
-
-      await fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k'
-        },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          subcategory: formData.get('subcategory'),
-          brand: formData.get('brand'),
-          score: score ? parseInt(score) : null,
-          fav: formData.get('fav') === 'true',
-          colour: colours,
-          pattern: formData.get('pattern'),
-          style: formData.get('style'),
-          zone: formData.get('zone'),
-          category: formData.get('category'),
-          photo: cloudinaryData.secure_url
-        })
-      });
-
-      alert('Wardrobe item submitted!');
-      form.reset();
+    const cloudinaryRes = await fetch('https://api.cloudinary.com/v1_1/dxehyqwbc/image/upload', {
+      method: 'POST',
+      body: cloudForm,
     });
+    const cloudinaryData = await cloudinaryRes.json();
+
+    const colours = [...form.querySelectorAll('input[name="colour"]:checked')].map(cb => cb.value);
+    const score = form.querySelector('input[name="score"]:checked')?.value;
+
+    await fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'YOUR_SUPABASE_API_KEY'
+      },
+      body: JSON.stringify({
+        name: formData.get('name'),
+        subcategory: formData.get('subcategory'),
+        brand: formData.get('brand'),
+        score: score ? parseInt(score) : null,
+        fav: formData.get('fav') === 'true',
+        colour: colours,
+        pattern: formData.get('pattern'),
+        style: formData.get('style'),
+        zone: formData.get('zone'),
+        category: formData.get('category'),
+        photo: cloudinaryData.secure_url
+      })
+    });
+
+    alert('Wardrobe item submitted!');
+    form.reset();
+  } catch (error) {
+    alert('Something went wrong. Please try again.');
+    console.error(error);
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = 'Submit';
+  }
+});
   </script>
 </body>
 
