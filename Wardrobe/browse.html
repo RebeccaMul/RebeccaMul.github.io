@@ -16,8 +16,8 @@
     <div class="summoning-text">Summoning contents…</div>
   </div>
 
+  <h2 class="wardrobe-title">Becka’s Digital Wardrobe ✨</h2>
   <div id="supabaseItems"></div>
-  <h2 class="form-header-title">Becka’s Digital Wardrobe ✨</h2>
 
   <script>
     const itemsContainer = document.getElementById('supabaseItems');
@@ -33,11 +33,13 @@
       .then(data => {
         if (data.length) {
           itemsContainer.innerHTML = data.map(item => `
-            <div class="item-card">
-              <img src="${item.photo}" alt="${item.name}" />
-              <div>${item.name}</div>
-            </div>
-          `).join('');
+        <div class="item-card">
+          <img src="${item.photo}" alt="${item.name}" />
+          <div class="item-name">${item.name}</div>
+          <div class="item-brand">${item.brand}</div>
+        </div>
+      `).join('');
+          itemsContainer.style.display = 'grid';
         } else {
           itemsContainer.innerHTML =
             `<div class="item-card empty">
@@ -49,6 +51,7 @@
           loader.style.display = 'none';
           itemsContainer.style.opacity = '1';
           itemsContainer.style.display = 'grid';
+          document.querySelector('.wardrobe-title').style.opacity = '1';
         }, 1000);
       });
   </script>
