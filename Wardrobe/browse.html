@@ -39,16 +39,16 @@
             </div>
           `).join('');
         } else {
-          itemsContainer.innerHTML = 
-          `<div class="item-card empty">
+          itemsContainer.innerHTML =
+            `<div class="item-card empty">
             Nothing lingers here… yet 🕯️
           </div>`;
         }
 
-        loader.style.opacity = '0';
         setTimeout(() => {
           loader.style.display = 'none';
           itemsContainer.style.opacity = '1';
+          itemsContainer.style.display = 'grid';
         }, 1000);
       });
   </script>
