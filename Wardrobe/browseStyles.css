@@ -207,22 +207,27 @@ select {
 }
 
 .pagination button {
-  background-color: darkslategray;
-  color: white;
-  border: none;
-  padding: 0.6rem 1rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--accent-color);
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
   border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
+
+.pagination button:hover {
+  background-color: var(--accent-color);
+  color: #1a1a1a
+}
+
 
 .pagination button:disabled {
   opacity: 0.5;
   cursor: default;
 }
 
-button:hover {
+button:hover:not(.theme-toggle) {
   box-shadow: 0 0 10px var(--accent-color);
 }
 
