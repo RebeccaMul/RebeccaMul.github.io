@@ -83,8 +83,8 @@ body {
 }
 
 .wardrobe-title {
+  color: var(--accent-color);
   text-align: center;
-  color: white;
   font-family: "Times New Roman", Times, serif;
   font-size: 1.8rem;
   margin: 2rem auto 0.5rem;
@@ -222,6 +222,14 @@ select {
   cursor: default;
 }
 
+button:hover {
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
 
 @keyframes fadeInGrid {
   from {
@@ -284,4 +292,14 @@ select {
     opacity: 0;
     transform: scale(1.4);
   }
+}
+
+@keyframes candleFlicker {
+  0% { box-shadow: 0 0 5px var(--accent-color); }
+  50% { box-shadow: 0 0 12px var(--accent-color); }
+  100% { box-shadow: 0 0 5px var(--accent-color); }
+}
+
+body[data-theme="candlelit"] .item-card {
+  animation: candleFlicker 3s infinite ease-in-out;
 }
