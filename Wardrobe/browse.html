@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <button id="themeToggle" class="theme-toggle" title="Toggle mood">🕯️</button>
+  <button id="themeToggle" class="theme-toggle" title="Toggle mood" aria-label="Toggle Theme" data-lit="false">🕯️</button>
 
   <div id="loader">
     <div class="wardrobe">
@@ -18,7 +18,7 @@
     <div class="summoning-text">Summoning contents…</div>
   </div>
 
-  <h2 class="wardrobe-title">Becka’s Digital Wardrobe ✨</h2>
+  <h2 class="wardrobe-title">Becka’s Digital Wardrobe</h2>
   <div id="supabaseItems"></div>
 
   <div class="pagination">
@@ -102,6 +102,13 @@
     document.body.setAttribute('data-theme', isCandle ? '' : 'candlelit');
     toggleBtn.textContent = isCandle ? '🕯️' : '🌙';
   });
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('candlelit');
+  const isCandlelit = document.body.classList.contains('candlelit');
+  document.getElementById('themeToggle').setAttribute('data-lit', isCandlelit);
+});
+
 </script>
 
 </body>

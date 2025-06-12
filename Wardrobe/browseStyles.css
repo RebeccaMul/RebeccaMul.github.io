@@ -95,6 +95,24 @@ body {
   animation-delay: 0.8s;
 }
 
+@media (max-width: 480px) {
+  .wardrobe-title {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .wardrobe-title::after {
+    content: '✨';
+    font-size: 1.3rem;
+  }
+}
+
+
 #supabaseItems {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -307,4 +325,16 @@ a:hover {
 
 body[data-theme="candlelit"] .item-card {
   animation: candleFlicker 3s infinite ease-in-out;
+}
+
+.icon-toggle[data-lit="true"] {
+  filter: drop-shadow(0 0 6px var(--accent-color));
+  animation: flickerIcon 2s infinite ease-in-out;
+}
+
+@keyframes flickerIcon {
+  0%, 100% { opacity: 1; }
+  40% { opacity: 0.7; }
+  60% { opacity: 0.9; }
+  80% { opacity: 0.8; }
 }
