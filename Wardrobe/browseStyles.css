@@ -101,11 +101,10 @@ body {
     font-size: 1.4rem;
     line-height: 1.4;
     word-spacing: 0.05rem;
-    max-width: 80%;
+    max-width: 75%;
     margin-left: auto;
     margin-right: auto;
   }
-}
 
   .wardrobe-title::after {
     content: "";
