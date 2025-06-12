@@ -1,11 +1,25 @@
+:root {
+  --bg-color: #1a1a1a;
+  --text-color: #f8f8f8;
+  --card-bg: #2b2b2b;
+  --accent-color: #fff2cc;
+}
+
+body[data-theme="candlelit"] {
+  --bg-color: #2d1b0e;
+  --text-color: #ffeccc;
+  --card-bg: #3a2417;
+  --accent-color: #ffcc66;
+}
+
 html,
 body {
   height: 100%;
 }
 
 body {
-  background-color: #1a1a1a;
-  color: #f8f8f8;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: 'Georgia', serif;
   margin: 0;
   padding: 0;
@@ -53,6 +67,21 @@ body {
   animation: flicker 2s infinite;
 }
 
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 999;
+  transition: transform 0.3s ease;
+}
+.theme-toggle:hover {
+  transform: scale(1.2);
+}
+
 .wardrobe-title {
   text-align: center;
   color: white;
@@ -78,7 +107,7 @@ body {
 }
 
 .item-card {
-  background: #2b2b2b;
+  background: var(--card-bg);
   padding: 1rem;
   border-radius: 10px;
   text-align: center;

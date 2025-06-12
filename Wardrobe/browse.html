@@ -9,6 +9,8 @@
 </head>
 
 <body>
+  <button id="themeToggle" class="theme-toggle" title="Toggle mood">🕯️</button>
+
   <div id="loader">
     <div class="wardrobe">
       <div class="dust"></div>
@@ -92,6 +94,13 @@
       currentPage++;
       renderPage(currentPage);
     }
+  });
+
+    const toggleBtn = document.getElementById('themeToggle');
+  toggleBtn.addEventListener('click', () => {
+    const isCandle = document.body.getAttribute('data-theme') === 'candlelit';
+    document.body.setAttribute('data-theme', isCandle ? '' : 'candlelit');
+    toggleBtn.textContent = isCandle ? '🕯️' : '🌙';
   });
 </script>
 
