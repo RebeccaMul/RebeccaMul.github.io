@@ -285,8 +285,24 @@ a:hover {
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--accent-color);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
+
+.filter-bar-row select:focus,
+.filter-bar-row input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 6px var(--accent-color);
+}
+
+.filter-bar-row select option {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
 
 .clear-filters {
   background-color: transparent;
@@ -296,6 +312,7 @@ a:hover {
   margin: 0 0.5rem;
   border-radius: 5px;
   transition: all 0.3s ease;
+  font-size: medium;
 }
 
 .filter-icon-row {
