@@ -49,6 +49,8 @@
       <option value="brand">Brand A–Z</option>
       <option value="colour">Colour</option>
     </select>
+
+    <button id="clearFilters" class="clear-filters">Kill Filters 💀</button>
   </div>
 </div>
 
@@ -61,128 +63,6 @@
   <button id="nextPage">Next ⟶</button>
 </div>
 
-<script>
-  const itemsContainer = document.getElementById('supabaseItems');
-  const loader = document.getElementById('loader');
-  const pageIndicator = document.getElementById('pageIndicator');
-  const prevButton = document.getElementById('prevPage');
-  const nextButton = document.getElementById('nextPage');
-  const title = document.querySelector('.wardrobe-title');
-
-  let allItems = [];
-  let currentPage = 1;
-  const itemsPerPage = 9;
-
-  fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
-    headers: {
-      apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.length) {
-      allItems = data;
-      renderPage(currentPage);
-    } else {
-      itemsContainer.innerHTML = `
-        <div class="item-card empty">
-          Nothing lingers here… yet 🕯️
-        </div>`;
-    }
-
-    setTimeout(() => {
-      loader.style.display = 'none';
-      itemsContainer.style.opacity = '1';
-      title.style.opacity = '1';
-    }, 1000);
-  });
-
-  function renderPage(page) {
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = allItems.slice(start, end);
-
-    itemsContainer.innerHTML = pageItems.map(item => `
-      <div class="item-card">
-        <img src="${item.photo}" alt="${item.name}" />
-        <div class="item-category">${item.category}</div>
-        <div class="item-brand">${item.brand}</div>
-      </div>
-    `).join('');
-
-    pageIndicator.textContent = `Page ${currentPage}`;
-    prevButton.disabled = currentPage === 1;
-    nextButton.disabled = end >= allItems.length;
-  }
-
-  prevButton.addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      renderPage(currentPage);
-    }
-  });
-
-  nextButton.addEventListener('click', () => {
-    if (currentPage * itemsPerPage < allItems.length) {
-      currentPage++;
-      renderPage(currentPage);
-    }
-  });
-
-    const toggleBtn = document.getElementById('themeToggle');
-  toggleBtn.addEventListener('click', () => {
-    const isCandle = document.body.getAttribute('data-theme') === 'candlelit';
-    document.body.setAttribute('data-theme', isCandle ? '' : 'candlelit');
-    toggleBtn.textContent = isCandle ? '🕯️' : '🌙';
-  });
-
-  document.getElementById('themeToggle').addEventListener('click', () => {
-  document.body.classList.toggle('candlelit');
-  const isCandlelit = document.body.classList.contains('candlelit');
-  document.getElementById('themeToggle').setAttribute('data-lit', isCandlelit);
-});
-
-document.getElementById('searchInput').addEventListener('input', applyFilters);
-document.querySelectorAll('.filter-bar select, #filterFav').forEach(el =>
-  el.addEventListener('change', applyFilters)
-);
-
-function applyFilters() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const cat = document.getElementById('filterCategory').value;
-  const subcat = document.getElementById('filterSubcategory').value;
-  const pattern = document.getElementById('filterPattern').value;
-  const style = document.getElementById('filterStyle').value;
-  const zone = document.getElementById('filterZone').value;
-  const colour = document.getElementById('filterColour').value;
-  const fav = document.getElementById('filterFav').checked;
-  const sort = document.getElementById('sortBy').value;
-
-  const filtered = allItems.filter(item => {
-    return (
-      (!searchTerm || item.name?.toLowerCase().includes(searchTerm) || item.brand?.toLowerCase().includes(searchTerm)) &&
-      (!cat || item.category === cat) &&
-      (!subcat || item.subcategory === subcat) &&
-      (!pattern || item.pattern === pattern) &&
-      (!style || item.style === style) &&
-      (!zone || item.zone === zone) &&
-      (!colour || item.colour?.includes(colour)) &&
-      (!fav || item.fav)
-    );
-  });
-
-  if (sort === 'score') filtered.sort((a, b) => (b.score || 0) - (a.score || 0));
-  else if (sort === 'brand') filtered.sort((a, b) => (a.brand || '').localeCompare(b.brand || ''));
-  else if (sort === 'colour') filtered.sort((a, b) => (a.colour?.[0] || '').localeCompare(b.colour?.[0] || ''));
-
-  currentPage = 1;
-  renderFiltered(filtered);
-}
-
-
-</script>
-
+<script src="browseLogic.js"></script>
 </body>
-
 </html>
