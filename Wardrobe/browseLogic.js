@@ -209,3 +209,35 @@ document.getElementById('clearFilters').addEventListener('click', () => {
 
   applyFilters();
 });
+
+function toggleFilterSection(buttonId, className) {
+  const button = document.getElementById(buttonId);
+  const filterBar = document.querySelector('.filter-bar-row');
+
+  button.addEventListener('click', () => {
+    const isActive = filterBar.classList.toggle(className);
+    button.setAttribute('data-lit', isActive);
+  });
+}
+
+toggleFilterSection('toggleSearch', 'show-search');
+toggleFilterSection('toggleSort', 'show-sort');
+toggleFilterSection('toggleFilters', 'show-filters');
+
+const filterRow = document.querySelector('.filter-bar-row');
+
+function toggleSection(sectionClass) {
+  ['show-search', 'show-sort', 'show-filters'].forEach(cls => {
+    if (cls === sectionClass) {
+      filterRow.classList.toggle(cls);
+    } else {
+      filterRow.classList.remove(cls);
+    }
+  });
+}
+
+document.getElementById('toggleSearch').addEventListener('click', () => toggleSection('show-search'));
+document.getElementById('toggleSort').addEventListener('click', () => toggleSection('show-sort'));
+document.getElementById('toggleFilters').addEventListener('click', () => toggleSection('show-filters'));
+
+
