@@ -197,7 +197,7 @@ document.getElementById('secondaryFilter').addEventListener('change', function (
     uniqueVals.map(val => `<option value="${val}">${val}</option>`).join('');
 });
 
-document.getElementById('clearFilters').addEventListener('click', () => {
+function clearFilters() {
   document.getElementById('searchInput').value = '';
   document.getElementById('filterCategory').value = '';
   document.getElementById('filterSubcategory').value = '';
@@ -208,7 +208,20 @@ document.getElementById('clearFilters').addEventListener('click', () => {
   document.getElementById('sortBy').value = '';
 
   applyFilters();
+}
+
+document.getElementById('clearFilters').addEventListener('click', clearFilters);
+
+document.getElementById('clearFiltersMobile').addEventListener('click', () => {
+  clearFilters();
+  document.querySelector('.filter-bar-row').classList.remove('show-search', 'show-sort', 'show-filters');
+
+  // Clear icon glows
+  document.getElementById('toggleSearch').removeAttribute('data-lit');
+  document.getElementById('toggleSort').removeAttribute('data-lit');
+  document.getElementById('toggleFilters').removeAttribute('data-lit');
 });
+
 
 const filterRow = document.querySelector('.filter-bar-row');
 
