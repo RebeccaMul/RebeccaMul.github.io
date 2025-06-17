@@ -257,6 +257,30 @@ a:hover {
   color: var(--accent-color);
 }
 
+.filter-bar-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+
+.filter-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 250px;
+  gap: 0.5rem;
+}
+
+.filter-bar-row select,
+.filter-bar-row input[type="text"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 
 @keyframes fadeInGrid {
   from {
