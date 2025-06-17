@@ -210,34 +210,37 @@ document.getElementById('clearFilters').addEventListener('click', () => {
   applyFilters();
 });
 
-function toggleFilterSection(buttonId, className) {
-  const button = document.getElementById(buttonId);
-  const filterBar = document.querySelector('.filter-bar-row');
-
-  button.addEventListener('click', () => {
-    const isActive = filterBar.classList.toggle(className);
-    button.setAttribute('data-lit', isActive);
-  });
-}
-
-toggleFilterSection('toggleSearch', 'show-search');
-toggleFilterSection('toggleSort', 'show-sort');
-toggleFilterSection('toggleFilters', 'show-filters');
-
 const filterRow = document.querySelector('.filter-bar-row');
 
-function toggleSection(sectionClass) {
-  ['show-search', 'show-sort', 'show-filters'].forEach(cls => {
-    if (cls === sectionClass) {
-      filterRow.classList.toggle(cls);
-    } else {
-      filterRow.classList.remove(cls);
-    }
-  });
+const filterBar = document.querySelector('.filter-bar-row');
+const searchBtn = document.getElementById('toggleSearch');
+const sortBtn = document.getElementById('toggleSort');
+const filtersBtn = document.getElementById('toggleFilters');
+
+function toggleSection(sectionClass, activeBtn, otherBtns) {
+  const isAlreadyActive = filterBar.classList.contains(sectionClass);
+
+  // Reset all
+  filterBar.classList.remove('show-search', 'show-sort', 'show-filters');
+  [searchBtn, sortBtn, filtersBtn].forEach(btn => btn.removeAttribute('data-lit'));
+
+  if (!isAlreadyActive) {
+    filterBar.classList.add(sectionClass);
+    activeBtn.setAttribute('data-lit', true);
+  }
 }
 
-document.getElementById('toggleSearch').addEventListener('click', () => toggleSection('show-search'));
-document.getElementById('toggleSort').addEventListener('click', () => toggleSection('show-sort'));
-document.getElementById('toggleFilters').addEventListener('click', () => toggleSection('show-filters'));
+searchBtn.addEventListener('click', () => {
+  toggleSection('show-search', searchBtn, [sortBtn, filtersBtn]);
+});
+
+sortBtn.addEventListener('click', () => {
+  toggleSection('show-sort', sortBtn, [searchBtn, filtersBtn]);
+});
+
+filtersBtn.addEventListener('click', () => {
+  toggleSection('show-filters', filtersBtn, [searchBtn, sortBtn]);
+});
+
 
 
