@@ -1,17 +1,56 @@
 body {
   font-family: sans-serif;
-  background-color: darkslategray;
+  background: linear-gradient(to bottom, darkslategray 0%, #000000 100%);
   padding: 2rem;
 }
 
 form {
   max-width: 700px;
   margin: auto;
-  background-color: #fff;
+  background-color: #1c1c1c; 
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.06), 0 0 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #eee;
 }
+
+input[type="text"],
+input[type="number"],
+select,
+input[type="file"] {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #222;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 5px;
+  margin-top: 0.3rem;
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+  color: #aaa;
+}
+
+button {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: #2a2a2a;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #333;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
 
 h2 {
   text-align: center;
@@ -170,7 +209,6 @@ button {
     white-space: nowrap;
   }
 }
-
 
 .snowflake {
   color: #fff;

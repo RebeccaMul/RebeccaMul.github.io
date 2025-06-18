@@ -459,7 +459,7 @@ a:hover {
   background-repeat: repeat;
   background-size: 800px auto;
   opacity: 0.08;
-  animation: mistDrift 20s ease-in-out infinite;
+  animation: mistDrift 25s ease-in-out infinite;
   z-index: 0;
 }
 
@@ -468,8 +468,16 @@ a:hover {
     transform: translate(0, 0) scale(1);
     opacity: 0.2;
   }
-  50% {
+  25% {
     transform: translate(20px, -10px) scale(1.05);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.2;
+  }
+  75% {
+    transform: translate(-20px, -10px) scale(1.05);
     opacity: 0.25;
   }
   100% {
@@ -579,6 +587,11 @@ a:hover {
 
 body[data-theme="candlelit"] .item-card {
   animation: candleFlicker 3s infinite ease-in-out;
+}
+
+body.candlelit .mist-overlay {
+  filter: hue-rotate(30deg) brightness(1.1) contrast(1.1);
+  opacity: 0.12;
 }
 
 .icon-toggle[data-lit="true"] {
