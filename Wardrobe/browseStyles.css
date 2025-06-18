@@ -12,9 +12,12 @@ body[data-theme="candlelit"] {
   --accent-color: #ffcc66;
 }
 
-html,
-body {
+html {
   height: 100%;
+}
+
+body {
+  min-height: 100%;
 }
 
 body {
@@ -446,37 +449,34 @@ a:hover {
 }
 
 .mist-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: url('images/mist.png') center top / cover no-repeat;
+  background-image: url('images/mist.png');
+  background-repeat: repeat;
+  background-size: 800px auto;
   opacity: 0.08;
-  animation: mistFloat 20s ease-in-out infinite alternate;
+  animation: mistDrift 20s ease-in-out infinite;
   z-index: 0;
-  pointer-events: none;
 }
 
-.mist-overlay::after {
-  content: "";
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background: url('images/mist.png') center/contain no-repeat;
-  animation: dustPuffMist 2s ease-out;
-}
-
-@keyframes mistFloat {
+@keyframes mistDrift {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translate(0, 0) scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(20px, -10px) scale(1.05);
+    opacity: 0.25;
   }
   100% {
-    transform: translateY(-10px) scale(1.02);
+    transform: translate(0, 0) scale(1);
+    opacity: 0.2;
   }
 }
-
 
 @keyframes puffIn {
   0% {
