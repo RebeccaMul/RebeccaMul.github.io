@@ -24,6 +24,12 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  position: relative; 
+}
+
+body > *:not(.mist-overlay) {
+  position: relative;
+  z-index: 1;
 }
 
 #loader {
@@ -57,7 +63,7 @@ body {
   height: 80px;
   background: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
   border-radius: 50%;
-  animation: dustPuff 4s ease-in-out infinite;
+  animation: dustPuffMist 4s ease-in-out infinite;
 }
 
 .summoning-text {
@@ -88,12 +94,12 @@ body {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.8rem;
   margin: 2rem auto 0.5rem;
-  opacity: 0;
   transition: opacity 0.6s ease;
-  animation: fadeInGrid 1s ease forwards;
+  animation: dustPuffFadeIn 1s ease-out forwards;
   animation-delay: 0.8s;
   word-break: keep-all;
   hyphens: none;
+  animation-fill-mode: forwards;
 }
 
 @media (max-width: 480px) {
@@ -123,8 +129,14 @@ body {
   padding: 2rem;
   max-width: 1000px;
   margin: 0 auto;
-  opacity: 0;
-  animation: fadeInGrid 1s ease forwards;
+  animation: dustPuffFadeIn 0.7s ease-out forwards;
+  animation-fill-mode: forwards;
+}
+
+#supabaseItems,
+.wardrobe-title {
+  position: relative;
+  z-index: 1;
 }
 
 .item-card {
@@ -242,6 +254,13 @@ select {
 .pagination button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+#themeToggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
 }
 
 button:hover:not(.theme-toggle) {
@@ -426,6 +445,39 @@ a:hover {
   50% { transform: translateY(-5px); }
 }
 
+.mist-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: url('images/mist.png') center top / cover no-repeat;
+  opacity: 0.08;
+  animation: mistFloat 20s ease-in-out infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mist-overlay::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: url('images/mist.png') center/contain no-repeat;
+  animation: dustPuffMist 2s ease-out;
+}
+
+@keyframes mistFloat {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+
 @keyframes puffIn {
   0% {
     transform: scale(0.95) translateY(10px);
@@ -453,13 +505,16 @@ a:hover {
   }
 }
 
-@keyframes fadeInGrid {
-  from {
+@keyframes dustPuffFadeIn {
+  0% {
     opacity: 0;
+    transform: scale(0.95);
+    filter: blur(4px);
   }
-
-  to {
+  100% {
     opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
   }
 }
 
@@ -495,7 +550,7 @@ a:hover {
   }
 }
 
-@keyframes dustPuff {
+@keyframes dustPuffMist {
   0% {
     opacity: 0;
     transform: scale(0.7);
