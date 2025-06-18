@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Browse Wardrobe 🔭</title>
+  <title>Browse 🔭</title>
   <link rel="stylesheet" href="browseStyles.css" />
 </head>
 
@@ -20,6 +20,8 @@
 
  <h2 class="wardrobe-title">Becka’s Digital<wbr> Wardrobe ✨</h2>
 
+ <button id="toggleDrawer" aria-label="Reveal filters" class="icon-toggle floating-key">🗝️</button>
+
 <div class="filter-icon-row">
   <button id="toggleSearch" aria-label="Toggle search" class="icon-toggle">🔍</button>
   <button id="toggleFilters" aria-label="Toggle filters" class="icon-toggle">🔮</button>
@@ -27,8 +29,7 @@
   <button id="clearFiltersMobile" aria-label="Clear filters" class="icon-toggle">💀</button>
 </div>
 
-
- <div class="filter-bar-row">
+ <div class="filter-bar-row drawer-hidden">
 
   <div class="filter-col">
     <input type="text" id="searchInput" placeholder="Search…" />
@@ -61,7 +62,6 @@
     <button id="clearFilters" class="clear-filters desktop-only">Kill Filters 💀</button>
   </div>
 </div>
-
 
   <div id="supabaseItems"></div>
 

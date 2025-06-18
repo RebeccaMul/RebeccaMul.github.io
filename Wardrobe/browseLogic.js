@@ -10,7 +10,6 @@
   const itemsPerPage = 9;
   let filteredItems = [];
 
-
   fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
     headers: {
       apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
@@ -108,13 +107,11 @@ nextButton.addEventListener('click', () => {
   document.getElementById('themeToggle').setAttribute('data-lit', isCandlelit);
 });
 
-
 document.querySelectorAll('#filterCategory, #filterSubcategory, #filterValue, #sortBy').forEach(el =>
   el.addEventListener('change', applyFilters)
 );
 
 document.getElementById('searchInput').addEventListener('input', applyFilters);
-
 
 function applyFilters() {
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -171,7 +168,6 @@ function renderFiltered(filteredItems) {
   nextButton.disabled = end >= filteredItems.length;
 }
 
-
 document.getElementById('secondaryFilter').addEventListener('change', function () {
   const selected = this.value;
   const filterValue = document.getElementById('filterValue');
@@ -222,13 +218,12 @@ document.getElementById('clearFiltersMobile').addEventListener('click', () => {
   document.getElementById('toggleFilters').removeAttribute('data-lit');
 });
 
-
 const filterRow = document.querySelector('.filter-bar-row');
-
 const filterBar = document.querySelector('.filter-bar-row');
 const searchBtn = document.getElementById('toggleSearch');
 const sortBtn = document.getElementById('toggleSort');
 const filtersBtn = document.getElementById('toggleFilters');
+const drawerBtn = document.getElementById('toggleDrawer');
 
 function toggleSection(sectionClass, activeBtn, otherBtns) {
   const isAlreadyActive = filterBar.classList.contains(sectionClass);
@@ -253,6 +248,12 @@ sortBtn.addEventListener('click', () => {
 
 filtersBtn.addEventListener('click', () => {
   toggleSection('show-filters', filtersBtn, [searchBtn, sortBtn]);
+});
+
+drawerBtn.addEventListener('click', () => {
+  const isOpen = filterBar.classList.toggle('drawer-visible');
+  filterBar.classList.toggle('drawer-hidden', !isOpen);
+  drawerBtn.setAttribute('data-lit', isOpen);
 });
 
 
