@@ -416,6 +416,20 @@ a:hover {
   }
 }
 
+@media (max-width: 600px) {
+  .filter-bar-row.drawer-hidden {
+    max-height: none;
+    overflow: visible;
+    opacity: 1;
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+
+  .filter-bar-row {
+    transition: none !important;
+  }
+}
+
 .wardrobe-footer {
   text-align: center;
   margin-top: 2rem;
