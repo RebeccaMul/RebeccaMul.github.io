@@ -2,16 +2,17 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # Every day at 8 AM UTC
+    - cron: '0 8 * * *'  # Runs daily at 8am UTC
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Keep Supabase project alive
+      - name: Insert dummy row into Frankenstein table
         run: |
-          curl -X POST "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/keepalive" \
+          curl -X POST "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/frankenstein" \
           -H "apikey: ${{ secrets.SUPABASE_API_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}" \
           -H "Content-Type: application/json" \
-          -d '{"pinged_at": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'"}'
+          -d '{}'
