@@ -2,14 +2,16 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    - cron: '0 8 * * *' 
-  workflow_dispatch: 
+    - cron: '0 8 * * *'  # Every day at 8 AM UTC
+  workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Curl Supabase to prevent sleeping
+      - name: Keep Supabase project alive
         run: |
-          curl -X GET "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?select=id" \
-          -H "apikey: ${{ secrets.SUPABASE_API_KEY }}"
+          curl -X POST "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/keepalive" \
+          -H "apikey: ${{ secrets.SUPABASE_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"pinged_at": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'"}'
