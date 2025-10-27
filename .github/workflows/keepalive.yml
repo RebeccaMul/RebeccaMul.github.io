@@ -9,17 +9,8 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Clean up old entries
+      - name: Hit Supabase SELECT endpoint
         run: |
-          curl -X DELETE "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/frankenstein" \
+          curl -X GET "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/frankenstein?select=uuid&limit=1" \
           -H "apikey: ${{ secrets.SUPABASE_API_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}" \
-          -H "Content-Type: application/json"
-
-      - name: Insert dummy row into Frankenstein table
-        run: |
-          curl -X POST "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/frankenstein" \
-          -H "apikey: ${{ secrets.SUPABASE_API_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}" \
-          -H "Content-Type: application/json" \
-          -d '{}'
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}"
