@@ -286,22 +286,28 @@ document.getElementById('zombieSubmit').addEventListener('click', async () => {
 
 document.getElementById('ghostSubmit').addEventListener('click', async () => {
   try {
-    await fetch(`https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?name=eq.DUD ENTRY`, {
-      method: 'DELETE',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-      }
-    });
+    const res = await fetch(`https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?subcategory=ilike.Necromancy*`, {
+  method: 'DELETE',
+  headers: {
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  }
+});
 
-    alert('👻 Ghosts purged!');
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
+    }
+
+    const result = await res.json();
+    alert(`👻 Ghosts purged! (${result.length} removed)`);
   } catch (error) {
     console.error(error);
     alert('Failed to purge ghosts');
   }
 });
-
 
   </script>
 </body>
