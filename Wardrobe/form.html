@@ -142,9 +142,22 @@
     <input type="file" name="photo" accept="image/*" required>
 
     <button type="submit">Submit</button>
+
+  <hr class="necromancy-divider" />
+  
+  <div class="necromancy-title">⚰️ Necromancy Options 🪦</div>
+  
+  <div class="necromancy-row">      
+      <button type="button" id="zombieSubmit" class="zombie-button">🧟‍♀️ Resurrect</button>
+
+      <button type="button" id="ghostSubmit" class="ghost-button">👻 Purge Ghosts</button>
+  </div>
+
   </form>
 
   <script>
+
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k';
 
     const categoryToSubcategories = {
       Outerwear: [
@@ -212,7 +225,7 @@ document.getElementById('supabaseForm').addEventListener('submit', async functio
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k'
+        'apikey': SUPABASE_KEY
       },
       body: JSON.stringify({
         name: formData.get('name'),
@@ -239,6 +252,57 @@ document.getElementById('supabaseForm').addEventListener('submit', async functio
     submitButton.textContent = 'Submit';
   }
 });
+
+document.getElementById('zombieSubmit').addEventListener('click', async () => {
+  try {
+    await fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+      },
+      body: JSON.stringify({
+        name: 'DUD ENTRY',
+        brand: 'KeepAlive',
+        category: 'Other',
+        subcategory: 'Necromancy',
+        score: 0,
+        fav: false,
+        colour: ['Grey'],
+        pattern: 'None',
+        style: 'General',
+        zone: 'None',
+        photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Transparent_square.svg/1200px-Transparent_square.svg.png'
+      }),
+    });
+
+    alert('🧟‍♀️ Dud entry resurrected!');
+  } catch (error) {
+    console.error(error);
+    alert('Failed to submit dummy entry');
+  }
+});
+
+document.getElementById('ghostSubmit').addEventListener('click', async () => {
+  try {
+    await fetch(`https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?name=eq.DUD ENTRY`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+      }
+    });
+
+    alert('👻 Ghosts purged!');
+  } catch (error) {
+    console.error(error);
+    alert('Failed to purge ghosts');
+  }
+});
+
+
   </script>
 </body>
 

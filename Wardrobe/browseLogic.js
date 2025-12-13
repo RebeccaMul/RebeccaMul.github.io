@@ -19,7 +19,7 @@
   .then(res => res.json())
   .then(data => {
     if (data.length) {
-      allItems = data;
+      allItems = data.filter(item => item.name !== 'DUD ENTRY');
       const categorySelect = document.getElementById('filterCategory');
 const subcategorySelect = document.getElementById('filterSubcategory');
 

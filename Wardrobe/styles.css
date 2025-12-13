@@ -314,6 +314,74 @@ button {
   }
 }
 
+.ghost-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2a2a2a;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+}
+.ghost-button:hover {
+  background-color: #333;
+  color: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.zombie-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2a2a2a;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+}
+
+.zombie-button:hover {
+  background-color: #333;
+  color: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.necromancy-divider {
+  margin: 2rem 0 0.5rem;
+  border: none;
+  border-top: 2px dashed #555;
+}
+
+.necromancy-title {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #000; 
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+
+  text-shadow:
+    0 0 6px #ccc,
+    0 0 10px rgba(255, 255, 255, 0.12),
+    0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.necromancy-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.necromancy-row .zombie-button,
+.necromancy-row .ghost-button {
+  flex: 1;
+  min-width: 48%;
+  margin-top: 0;
+}
+
+
 .snowflake {
   position: fixed;
   top: -10%;
