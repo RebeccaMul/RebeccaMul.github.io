@@ -277,7 +277,7 @@ document.getElementById('zombieSubmit').addEventListener('click', async () => {
       }),
     });
 
-    alert('🧟‍♀️ Dud entry resurrected!');
+    alert('🧟‍♀️ wardrobe resurrected!');
   } catch (error) {
     console.error(error);
     alert('Failed to submit dummy entry');
@@ -302,7 +302,7 @@ document.getElementById('ghostSubmit').addEventListener('click', async () => {
     }
 
     const result = await res.json();
-    alert(`👻 Ghosts purged! (${result.length} removed)`);
+    alert(`👻 ${result.length} Ghosts purged!`);
   } catch (error) {
     console.error(error);
     alert('Failed to purge ghosts');
