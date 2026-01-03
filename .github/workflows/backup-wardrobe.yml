@@ -1,0 +1,32 @@
+name: Backup Supabase Wardrobe
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 08:00 UTC
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Fetch data from Supabase
+        run: |
+          curl -X GET "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?select=*" \
+            -H "apikey: ${{ secrets.SUPABASE_API_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -o wardrobe-backup.json
+
+      - name: Commit backup file
+        run: |
+          mkdir -p backups
+          timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+          mv wardrobe-backup.json backups/wardrobe_backup_$timestamp.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add backups/
+          git commit -m "🧵 Wardrobe backup $timestamp"
+          git push
