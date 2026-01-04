@@ -48,7 +48,7 @@ categorySelect.addEventListener('change', () => {
 
 subcategorySelect.addEventListener('change', applyFilters);
 
-      renderPage(currentPage);
+      applyFilters();
     } else {
       itemsContainer.innerHTML = `
         <div class="item-card empty">
