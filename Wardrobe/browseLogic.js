@@ -122,6 +122,11 @@ function applyFilters() {
   const sort = document.getElementById('sortBy').value;
 
   let filtered = allItems.filter(item => {
+
+    const isMakeup = item.category === "Makeup";
+    const showingMakeup = cat === "Makeup";
+    if (isMakeup && !showingMakeup) return false;
+
     const matchesSearch = !searchTerm || item.name?.toLowerCase().includes(searchTerm) || item.brand?.toLowerCase().includes(searchTerm);
     const matchesCategory = !cat || item.category === cat;
     const matchesSubcategory = !subcat || item.subcategory === subcat;
@@ -145,9 +150,9 @@ function applyFilters() {
   else if (sort === 'brand') filtered.sort((a, b) => (a.brand || '').localeCompare(b.brand || ''));
   else if (sort === 'colour') filtered.sort((a, b) => (a.colour?.[0] || '').localeCompare(b.colour?.[0] || ''));
 
-filteredItems = filtered;
-currentPage = 1;
-renderFiltered(filteredItems);
+  filteredItems = filtered;
+  currentPage = 1;
+  renderFiltered(filteredItems);
 }
 
 function renderFiltered(filteredItems) {
