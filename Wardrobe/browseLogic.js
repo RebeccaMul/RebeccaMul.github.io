@@ -261,5 +261,32 @@ drawerBtn.addEventListener('click', () => {
   drawerBtn.setAttribute('data-lit', isOpen);
 });
 
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImage');
+const modalClose = document.querySelector('.modal-close');
+const modalBackdrop = document.querySelector('.modal-backdrop');
 
+// Open modal
+itemsContainer.addEventListener('click', (e) => {
+  if (e.target.tagName === 'IMG') {
+    modalImg.src = e.target.src;
+    modalImg.alt = e.target.alt;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+});
 
+// Close modal function
+function closeModal() {
+  modal.classList.add('hidden');
+  modalImg.src = '';
+  document.body.style.overflow = '';
+}
+
+// Close triggers
+modalClose.addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
