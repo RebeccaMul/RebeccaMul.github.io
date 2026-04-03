@@ -63,34 +63,16 @@ subcategorySelect.addEventListener('change', applyFilters);
     }, 1000);
   });
 
-  function renderPage(page) {
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = allItems.slice(start, end);
-
-    itemsContainer.innerHTML = pageItems.map(item => `
-      <div class="item-card">
-        <img src="${item.photo}" alt="${item.name}" />
-        <div class="item-category">${item.category}</div>
-        <div class="item-brand">${item.brand}</div>
-      </div>
-    `).join('');
-
-    pageIndicator.textContent = `Page ${currentPage}`;
-    prevButton.disabled = currentPage === 1;
-    nextButton.disabled = end >= allItems.length;
-  }
-
 prevButton.addEventListener('click', () => {
   if (currentPage > 1) {
     currentPage--;
-    renderFiltered(filteredItems.length ? filteredItems : allItems);
+    renderFiltered(filteredItems);
   }
 });
 nextButton.addEventListener('click', () => {
   if (currentPage * itemsPerPage < (filteredItems.length ? filteredItems : allItems).length) {
     currentPage++;
-    renderFiltered(filteredItems.length ? filteredItems : allItems);
+    renderFiltered(filteredItems);
   }
 });
 

@@ -30,11 +30,6 @@ body {
   position: relative; 
 }
 
-body > *:not(.mist-overlay) {
-  position: relative;
-  z-index: 1;
-}
-
 #loader {
   height: 100vh;
   position: fixed;
