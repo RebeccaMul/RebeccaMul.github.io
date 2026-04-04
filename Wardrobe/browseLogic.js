@@ -146,7 +146,10 @@ function renderFiltered(filteredItems) {
     <div class="item-card">
       <img src="${item.photo}" alt="${item.name}" />
       <div class="item-category">${item.category}</div>
-      <div class="item-brand">${item.brand}</div>
+      <div class="item-brand">
+      ${item.brand}
+      ${item.zone === "Danger" ? `<span class="danger-icon">⚰️</span>` : ""}
+      </div>
     </div>
   `).join('');
 
