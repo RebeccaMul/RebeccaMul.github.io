@@ -143,14 +143,15 @@ function renderFiltered(filteredItems) {
   const pageItems = filteredItems.slice(start, end);
 
   itemsContainer.innerHTML = pageItems.map(item => `
-    <div class="item-card">
-      <img src="${item.photo}" alt="${item.name}" />
-      <div class="item-category">${item.category}</div>
-      <div class="item-brand">
+  <div class="item-card">
+    ${adminMode ? `<span class="delete-btn" data-id="${item.id}">🔪</span>` : ""}
+    <img src="${item.photo}" alt="${item.name}" />
+    <div class="item-category">${item.category}</div>
+    <div class="item-brand">
       ${item.brand}
       ${item.zone === "Danger" ? `<span class="danger-icon">⚰️</span>` : ""}
-      </div>
     </div>
+  </div>
   `).join('');
 
   pageIndicator.textContent = `Page ${currentPage}`;
@@ -202,7 +203,6 @@ document.getElementById('clearFiltersMobile').addEventListener('click', () => {
   clearFilters();
   document.querySelector('.filter-bar-row').classList.remove('show-search', 'show-sort', 'show-filters');
 
-  // Clear icon glows
   document.getElementById('toggleSearch').removeAttribute('data-lit');
   document.getElementById('toggleSort').removeAttribute('data-lit');
   document.getElementById('toggleFilters').removeAttribute('data-lit');
@@ -251,7 +251,6 @@ const modalImg = document.getElementById('modalImage');
 const modalClose = document.querySelector('.modal-close');
 const modalBackdrop = document.querySelector('.modal-backdrop');
 
-// Open modal
 itemsContainer.addEventListener('click', (e) => {
   if (e.target.tagName === 'IMG') {
     modalImg.src = e.target.src;
@@ -261,17 +260,50 @@ itemsContainer.addEventListener('click', (e) => {
   }
 });
 
-// Close modal function
 function closeModal() {
   modal.classList.add('hidden');
   modalImg.src = '';
   document.body.style.overflow = '';
 }
 
-// Close triggers
 modalClose.addEventListener('click', closeModal);
 modalBackdrop.addEventListener('click', closeModal);
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
+});
+
+let adminMode = false;
+
+document.getElementById('adminToggle').addEventListener('click', () => {
+  adminMode = !adminMode;
+  document.body.classList.toggle('admin-mode', adminMode);
+  document.getElementById('adminToggle').textContent = adminMode ? 'Exit Admin Mode 🔪' : 'Admin mode 🔪';
+  renderFiltered(filteredItems);
+});
+
+itemsContainer.addEventListener('click', async (e) => {
+  if (e.target.classList.contains('delete-btn')) {
+    const id = e.target.dataset.id;
+
+    const confirmed = confirm("Send to the void? 🌌");
+    if (!confirmed) return;
+
+    try {
+      await fetch(`https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?id=eq.${id}`, {
+        method: 'DELETE',
+        headers: {
+      apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
+      'Content-Type': 'application/json'
+        }
+      });
+
+      allItems = allItems.filter(item => item.id != id);
+      applyFilters();
+
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("Something went wrong while deleting the item.");
+    }
+  }
 });
