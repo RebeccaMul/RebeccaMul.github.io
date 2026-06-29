@@ -89,20 +89,23 @@ h1 {
     gap: 18px;
 }
 
-.nav-tile {
-    min-height: 130px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 8px;
+.nav-tile{
+    min-height:130px;
 
-    padding: 22px;
-    text-decoration: none;
-    color: inherit;
+    display:flex;
+    align-items:center;
+    gap:20px;
 
-    background: rgba(255,255,255,.65);
-    border: 1px solid rgba(77,155,146,.35);
-    border-radius: 18px;
+    padding:22px;
+
+    text-decoration:none;
+    color:inherit;
+
+    background:rgba(255,255,255,.65);
+
+    border:1px solid rgba(77,155,146,.35);
+
+    border-radius:18px;
 
     transition:
         transform .18s ease,
