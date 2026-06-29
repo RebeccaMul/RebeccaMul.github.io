@@ -38,30 +38,52 @@
 
         <section class="workspace">
 
-            <div class="panel">
+        <div class="panel">
 
-                <h2>People</h2>
+            <h2>People</h2>
 
-                <p class="placeholder">
-                    Person setup coming soon.
-                </p>
+            <div id="peopleList">
 
-            </div>
+                <input
+                    class="person-input"
+                    type="text"
+                    placeholder="Person 1"
+                    maxlength="30">
 
-            <div class="panel">
-
-                <h2>Transactions</h2>
-
-                <p class="placeholder">
-                    Payment entry coming soon.
-                </p>
-
-                <button disabled>
-                    <i class="fa-solid fa-plus"></i>
-                    Add Payment
-                </button>
+                <input
+                    class="person-input"
+                    type="text"
+                    placeholder="Person 2"
+                    maxlength="30">
 
             </div>
+
+            <button id="addPersonButton" class="secondary-button">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Add Person
+
+            </button>
+
+        </div>
+
+        <div class="panel">
+
+            <h2>Transactions</h2>
+
+            <div id="transactionList"></div>
+
+            <button id="addTransactionButton"
+                    class="secondary-button">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Transaction
+
+            </button>
+
+        </div>
 
             <div class="panel">
 
@@ -104,6 +126,8 @@
 <footer class="footer">
     © Rebecca Mulholland
 </footer>
+
+<script src="js/calc.js"></script>
 
 </body>
 </html>

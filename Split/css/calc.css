@@ -288,6 +288,54 @@ button{
 
 }
 
+.person-input{
+
+    width:100%;
+
+    margin-bottom:14px;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(77,155,146,.35);
+
+    background:rgba(255,255,255,.75);
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:border .2s ease;
+
+}
+
+.person-input:focus{
+
+    border-color:var(--accent);
+
+}
+
+.secondary-button{
+
+    background:white;
+
+    color:var(--accent-dark);
+
+    border:1px solid rgba(77,155,146,.35);
+
+    cursor:pointer;
+
+    opacity:1;
+
+}
+
+.secondary-button:hover{
+
+    background:#eef8f6;
+
+}
+
 @media (max-width:900px){
 
     .layout{
