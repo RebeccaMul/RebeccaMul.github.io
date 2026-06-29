@@ -11,7 +11,6 @@ document
 .getElementById("addTransactionButton")
 .addEventListener("click", addTransaction);
 
-
 personInputs.forEach(input => {
     input.addEventListener("input", refreshPaidByDropdowns);
 });
@@ -104,26 +103,86 @@ function addTransaction() {
 
         </select>
 
-        <label>Split</label>
+<label>Split</label>
 
-        <div class="split-options">
+<div class="split-options">
 
-            <label>
+        <label>
 
-                <input
-                    type="radio"
-                    name="split${transactionCount}"
-                    checked>
+            <input
+                type="radio"
+                name="split${transactionCount}"
+                value="half"
+                checked>
 
-                50 / 50
+            50 / 50
 
-            </label>
+        </label>
 
+        <label>
+
+            <input
+                type="radio"
+                name="split${transactionCount}"
+                value="exact">
+
+            Amount Owed
+
+        </label>
+
+        <input
+            class="transaction-input split-extra"
+            type="number"
+            step="0.01"
+            placeholder="Amount owed"
+            style="display:none;">
+
+        <label>
+
+            <input
+                type="radio"
+                name="split${transactionCount}"
+                value="percentage">
+
+            Percentage Owed
+
+        </label>
+
+        <input
+            class="transaction-input split-extra"
+            type="number"
+            min="0"
+            max="100"
+            placeholder="Percentage"
+            style="display:none;">
+
+    </div>
         </div>
 
     `;
 
     transactionList.appendChild(card);
+
+    const radios = card.querySelectorAll('input[type="radio"]');
+    const extras = card.querySelectorAll(".split-extra");
+
+    radios.forEach(radio => {
+
+        radio.addEventListener("change", () => {
+
+            extras[0].style.display =
+                radio.value === "exact" && radio.checked
+                    ? "block"
+                    : "none";
+
+            extras[1].style.display =
+                radio.value === "percentage" && radio.checked
+                    ? "block"
+                    : "none";
+
+        });
+
+    });
 
 }
 
