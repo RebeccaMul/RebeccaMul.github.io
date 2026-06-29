@@ -278,7 +278,7 @@ let adminMode = false;
 document.getElementById('adminToggle').addEventListener('click', () => {
   adminMode = !adminMode;
   document.body.classList.toggle('admin-mode', adminMode);
-  document.getElementById('adminToggle').textContent = adminMode ? 'Exit Admin Mode 🔪' : 'Admin mode 🔪';
+  document.getElementById('adminToggle').textContent = adminMode ? 'Exit Mode 🔪' : 'Admin mode 🔪';
   renderFiltered(filteredItems);
 });
 
