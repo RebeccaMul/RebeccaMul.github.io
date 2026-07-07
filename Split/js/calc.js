@@ -1,15 +1,10 @@
+//#region People
 const peopleList = document.getElementById("peopleList");
 const addButton = document.getElementById("addPersonButton");
-const transactionList = document.getElementById("transactionList");
-const transactions = [];
 
 let personCount = 2;
 const maxPeople = 5;
 let transactionCount = 0;
-
-document
-    .getElementById("addTransactionButton")
-    .addEventListener("click", addTransaction);
 
 document
     .querySelectorAll(".person-input")
@@ -30,6 +25,8 @@ addButton.addEventListener("click", () => {
     input.maxLength = 30;
 
     peopleList.appendChild(input);
+
+    wireUpPersonInput(input);
 
     if (personCount === maxPeople)
         addButton.style.display = "none";
@@ -76,6 +73,18 @@ function getPeople() {
 
 }
 
+//#endregion
+
+//#region Transactions
+const transactionList = document.getElementById("transactionList");
+const transactions = [];
+const balanceButton = document.getElementById("balanceButton");
+
+document
+    .getElementById("addTransactionButton")
+    .addEventListener("click", addTransaction);
+
+
 function addTransaction() {
 
     document
@@ -106,6 +115,10 @@ function addTransaction() {
 
 function createTransactionCard(transactionNumber) {
 
+    const card = document.createElement("div");
+
+    card.className = "transaction-card";
+
     const people = getPeople();
 
     const options =
@@ -113,13 +126,26 @@ function createTransactionCard(transactionNumber) {
             ? people.map((person, index) =>
                 `<option value="${index}">${person}</option>`).join("")
             : `<option value="0">Person 1</option>
-               <option value="1">Person 2</option>`;
-
-    const card = document.createElement("div");
-
-    card.className = "transaction-card";
+            <option value="1">Person 2</option>`;
 
     card.innerHTML = `
+
+    ${getTransactionFormHtml(transactionNumber, options)}
+
+    ${getEmptyTransactionSummaryHtml()}
+
+    `;
+
+    return card;
+
+}
+
+function getTransactionFormHtml(
+    transactionNumber,
+    options
+) {
+
+    return `
             <div class="transaction-form">
 
                 <h3>Transaction ${transactionNumber}</h3>
@@ -215,14 +241,7 @@ function createTransactionCard(transactionNumber) {
             </div>
 
         </div>
-
-        <div class="transaction-summary is-hidden">
-
-        </div>
-
             `;
-
-    return card;
 
 }
 
@@ -269,6 +288,18 @@ function saveTransaction(card) {
 
     const paidBy = card.querySelector("select").selectedIndex;
 
+    const splitType =
+        card.querySelector('input[type="radio"]:checked').value;
+
+    const splitExtras =
+        card.querySelectorAll(".split-extra");
+
+    const exactAmount =
+        parseFloat(splitExtras[0].value);
+
+    const percentage =
+        parseFloat(splitExtras[1].value);
+
     //val
     if (title === "") {
 
@@ -286,60 +317,231 @@ function saveTransaction(card) {
 
     }
 
-    const transaction = {
+    if (splitType === "exact" && isNaN(exactAmount)) {
 
-        id: crypto.randomUUID(),
+        alert("Please enter the amount owed.");
 
-        title,
+        return;
 
-        amount,
+    }
 
-        paidBy,
+    if (splitType === "percentage" && isNaN(percentage)) {
 
-        splitType: "half"
+        alert("Please enter a percentage.");
 
-    };
+        return;
 
-    transactions.push(transaction);
+    }
 
-    const personName =
-        getPeople()[paidBy];
+    if (splitType === "percentage"
+        && (percentage < 0 || percentage > 100)) {
 
-    card.querySelector(".transaction-summary").innerHTML = `
+        alert("Percentage must be between 0 and 100.");
 
-    <h3>${title}</h3>
+        return;
 
-    <p><strong>£${amount.toFixed(2)}</strong></p>
+    }
 
-    <p>Paid by ${personName}</p>
+    const existing =
+        transactions.find(
+            t => t.id === card.dataset.id
+        );
 
-    <p>50 / 50</p>
+    let transaction;
 
-    <div class="transaction-summary-actions">
+    if (existing) {
 
-    <button class="edit-button">
+        existing.title = title;
+        existing.amount = amount;
+        existing.paidBy = paidBy;
+        existing.splitType = splitType;
 
-    <i class="fa-solid fa-pen"></i>
+        existing.exactAmount =
+            splitType === "exact"
+                ? exactAmount
+                : null;
 
-    Edit
+        existing.percentage =
+            splitType === "percentage"
+                ? percentage
+                : null;
 
-    </button>
+        transaction = existing;
 
-    <button class="delete-button">
+    }
+    else {
 
-    <i class="fa-solid fa-trash"></i>
+        transaction = {
 
-    Delete
+            id: crypto.randomUUID(),
 
-    </button>
+            title,
+
+            amount,
+
+            paidBy,
+
+            splitType,
+
+            exactAmount:
+                splitType === "exact"
+                    ? exactAmount
+                    : null,
+
+            percentage:
+                splitType === "percentage"
+                    ? percentage
+                    : null
+
+        };
+
+        transactions.push(transaction);
+
+        card.dataset.id = transaction.id;
+    }
+
+    const summary = card.querySelector(".transaction-summary");
+
+    summary.innerHTML = getTransactionSummaryHtml(transaction);
+
+    wireUpSummary(card);
+
+    card.querySelector(".transaction-form").classList.add("is-hidden");
+
+    summary.classList.remove("is-hidden");
+
+    updateBalanceButton();
+}
+
+function wireUpSummary(card) {
+
+    const editButton = card.querySelector(".edit-button");
+
+    const deleteButton = card.querySelector(".delete-button");
+
+    editButton.addEventListener("click", () => {
+
+        card.querySelector(".transaction-form")
+            .classList.remove("is-hidden");
+
+        card.querySelector(".transaction-summary")
+            .classList.add("is-hidden");
+
+    });
+
+    deleteButton.addEventListener("click", () => {
+
+        const id = card.dataset.id;
+
+        const index =
+            transactions.findIndex(t => t.id === id);
+
+        if (index !== -1) {
+
+            transactions.splice(index, 1);
+
+        }
+
+        card.remove();
+
+        updateBalanceButton();
+
+    });
+
+}
+
+function calculateBalances(){
+    
+    const balances = {};    
+
+}
+
+function getTransactionShare(transaction){
+
+}
+//#endregion
+
+//#region Rendering
+function getEmptyTransactionSummaryHtml() {
+
+    return `
+
+    <div class="transaction-summary is-hidden">
 
     </div>
 
     `;
 
-    card.querySelector(".transaction-form").classList.add("is-hidden");
-    card.querySelector(".transaction-summary").classList.remove("is-hidden");
+}
+
+function getTransactionSummaryHtml(transaction) {
+
+    const personName = getPeople()[transaction.paidBy];
+
+    let splitDescription;
+
+    switch (transaction.splitType) {
+
+        case "half":
+            splitDescription = "50 / 50";
+            break;
+
+        case "exact":
+            splitDescription =
+                `£${transaction.exactAmount.toFixed(2)} owed`;
+            break;
+
+        case "percentage":
+            splitDescription =
+                `${transaction.percentage}% owed`;
+            break;
+
+    }
+
+    return `
+        <div class="transaction-summary-content">
+
+            <div class="transaction-details">
+
+                <h3>${transaction.title}</h3>
+
+                <p>
+                    <strong>£${transaction.amount.toFixed(2)}</strong>
+                </p>
+
+                <p>Paid by ${personName}</p>
+
+                <p>${splitDescription}</p>
+
+            </div>
+
+            <div class="transaction-summary-actions">
+
+                <button class="edit-button">
+                    <i class="fa-solid fa-pen"></i>
+                    Edit
+                </button>
+
+                <button class="delete-button">
+                    <i class="fa-solid fa-trash"></i>
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
 
 }
+
+function updateBalanceButton(){
+
+    balanceButton.disabled =
+        transactions.length === 0;
+
+}
+
+//#endregion
 
 addTransaction();
