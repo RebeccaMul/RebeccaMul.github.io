@@ -1,23 +1,23 @@
 const peopleList = document.getElementById("peopleList");
-const personInputs = document.querySelectorAll(".person-input");
 const addButton = document.getElementById("addPersonButton");
 const transactionList = document.getElementById("transactionList");
+const transactions = [];
 
 let personCount = 2;
 const maxPeople = 5;
 let transactionCount = 0;
 
 document
-.getElementById("addTransactionButton")
-.addEventListener("click", addTransaction);
+    .getElementById("addTransactionButton")
+    .addEventListener("click", addTransaction);
 
-personInputs.forEach(input => {
-    input.addEventListener("input", refreshPaidByDropdowns);
-});
+document
+    .querySelectorAll(".person-input")
+    .forEach(wireUpPersonInput);
 
 addButton.addEventListener("click", () => {
 
-    if(personCount >= maxPeople)
+    if (personCount >= maxPeople)
         return;
 
     personCount++;
@@ -31,11 +31,20 @@ addButton.addEventListener("click", () => {
 
     peopleList.appendChild(input);
 
-    if(personCount === maxPeople)
+    if (personCount === maxPeople)
         addButton.style.display = "none";
 
     refreshPaidByDropdowns();
 });
+
+function wireUpPersonInput(input) {
+
+    input.addEventListener(
+        "input",
+        refreshPaidByDropdowns
+    );
+
+}
 
 function refreshPaidByDropdowns() {
 
@@ -59,9 +68,43 @@ function refreshPaidByDropdowns() {
 
 }
 
+function getPeople() {
+
+    return [...document.querySelectorAll(".person-input")]
+        .map(x => x.value.trim())
+        .filter(x => x !== "");
+
+}
+
 function addTransaction() {
 
+    document
+        .querySelectorAll(".transaction-form")
+        .forEach(form => {
+
+            form.classList.add("is-hidden");
+
+        });
+
+    document
+        .querySelectorAll(".transaction-summary")
+        .forEach(summary => {
+
+            summary.classList.remove("is-hidden");
+
+        });
+
     transactionCount++;
+
+    const card = createTransactionCard(transactionCount);
+
+    transactionList.appendChild(card);
+
+    wireUpTransactionCard(card);
+
+}
+
+function createTransactionCard(transactionNumber) {
 
     const people = getPeople();
 
@@ -77,94 +120,117 @@ function addTransaction() {
     card.className = "transaction-card";
 
     card.innerHTML = `
+            <div class="transaction-form">
 
-        <h3>Transaction ${transactionCount}</h3>
+                <h3>Transaction ${transactionNumber}</h3>
 
-        <label>Title</label>
+                <label>Title</label>
 
-        <input
-            type="text"
-            class="transaction-input"
-            placeholder="Dinner">
+                <input
+                    type="text"
+                    class="transaction-input"
+                    placeholder="Dinner">
 
-        <label>Amount</label>
+                <label>Amount</label>
 
-        <input
-            type="number"
-            class="transaction-input"
-            placeholder="0.00"
-            step="0.01">
+                <input
+                    type="number"
+                    class="transaction-input"
+                    placeholder="0.00"
+                    step="0.01">
 
-        <label>Who Paid</label>
+                <label>Who Paid</label>
 
-        <select class="transaction-input">
+                <select class="transaction-input">
 
-            ${options}
+                    ${options}
 
-        </select>
+                </select>
 
-<label>Split</label>
+        <label>Split</label>
 
-<div class="split-options">
+        <div class="split-options">
 
-        <label>
+                <label>
 
-            <input
-                type="radio"
-                name="split${transactionCount}"
-                value="half"
-                checked>
+                    <input
+                        type="radio"
+                        name="split${transactionCount}"
+                        value="half"
+                        checked>
 
-            50 / 50
+                    50 / 50
 
-        </label>
+                </label>
 
-        <label>
+                <label>
 
-            <input
-                type="radio"
-                name="split${transactionCount}"
-                value="exact">
+                    <input
+                        type="radio"
+                        name="split${transactionCount}"
+                        value="exact">
 
-            Amount Owed
+                    Amount Owed
 
-        </label>
+                </label>
 
-        <input
-            class="transaction-input split-extra"
-            type="number"
-            step="0.01"
-            placeholder="Amount owed"
-            style="display:none;">
+                <input
+                    class="transaction-input split-extra"
+                    type="number"
+                    step="0.01"
+                    placeholder="Amount owed"
+                    style="display:none;">
 
-        <label>
+                <label>
 
-            <input
-                type="radio"
-                name="split${transactionCount}"
-                value="percentage">
+                    <input
+                        type="radio"
+                        name="split${transactionCount}"
+                        value="percentage">
 
-            Percentage Owed
+                    Percentage Owed
 
-        </label>
+                </label>
 
-        <input
-            class="transaction-input split-extra"
-            type="number"
-            min="0"
-            max="100"
-            placeholder="Percentage"
-            style="display:none;">
+                <input
+                    class="transaction-input split-extra"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="Percentage"
+                    style="display:none;">
 
-    </div>
+            </div>
+
+            <div class="transaction-actions">
+
+            <button class="save-button">
+
+                <i class="fa-solid fa-check"></i>
+
+                Save
+
+            </button>
+
+            </div>
+
         </div>
 
-    `;
+        <div class="transaction-summary is-hidden">
 
-    transactionList.appendChild(card);
+        </div>
+
+            `;
+
+    return card;
+
+}
+
+function wireUpTransactionCard(card) {
 
     const radios = card.querySelectorAll('input[type="radio"]');
     const extras = card.querySelectorAll(".split-extra");
+    const saveButton = card.querySelector(".save-button");
 
     radios.forEach(radio => {
 
@@ -184,13 +250,95 @@ function addTransaction() {
 
     });
 
+    saveButton.addEventListener("click", () => {
+
+        saveTransaction(card);
+
+    });
+
 }
 
-function getPeople() {
+function saveTransaction(card) {
 
-    return [...document.querySelectorAll(".person-input")]
-        .map(x => x.value.trim())
-        .filter(x => x !== "");
+    const title = card.querySelector('input[type="text"]').value.trim();
+
+    const amount =
+        parseFloat(
+            card.querySelector('input[type="number"]').value
+        );
+
+    const paidBy = card.querySelector("select").selectedIndex;
+
+    //val
+    if (title === "") {
+
+        alert("Please enter a title.");
+
+        return;
+
+    }
+
+    if (isNaN(amount)) {
+
+        alert("Please enter an amount.");
+
+        return;
+
+    }
+
+    const transaction = {
+
+        id: crypto.randomUUID(),
+
+        title,
+
+        amount,
+
+        paidBy,
+
+        splitType: "half"
+
+    };
+
+    transactions.push(transaction);
+
+    const personName =
+        getPeople()[paidBy];
+
+    card.querySelector(".transaction-summary").innerHTML = `
+
+    <h3>${title}</h3>
+
+    <p><strong>£${amount.toFixed(2)}</strong></p>
+
+    <p>Paid by ${personName}</p>
+
+    <p>50 / 50</p>
+
+    <div class="transaction-summary-actions">
+
+    <button class="edit-button">
+
+    <i class="fa-solid fa-pen"></i>
+
+    Edit
+
+    </button>
+
+    <button class="delete-button">
+
+    <i class="fa-solid fa-trash"></i>
+
+    Delete
+
+    </button>
+
+    </div>
+
+    `;
+
+    card.querySelector(".transaction-form").classList.add("is-hidden");
+    card.querySelector(".transaction-summary").classList.remove("is-hidden");
 
 }
 

@@ -390,6 +390,12 @@ button{
 
 }
 
+.is-hidden{
+
+    display:none;
+
+}
+
 @media (max-width:900px){
 
     .layout{
