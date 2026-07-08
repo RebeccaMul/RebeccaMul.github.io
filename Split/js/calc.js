@@ -78,7 +78,6 @@ function getPeople() {
 //#region Transactions
 const transactionList = document.getElementById("transactionList");
 const transactions = [];
-const balanceButton = document.getElementById("balanceButton");
 
 document
     .getElementById("addTransactionButton")
@@ -155,7 +154,7 @@ function getTransactionFormHtml(
                 <input
                     type="text"
                     class="transaction-input"
-                    placeholder="Dinner">
+                    placeholder="Name">
 
                 <label>Amount</label>
 
@@ -185,7 +184,7 @@ function getTransactionFormHtml(
                         value="half"
                         checked>
 
-                    50 / 50
+                    Even Split
 
                 </label>
 
@@ -199,6 +198,18 @@ function getTransactionFormHtml(
                     Amount Owed
 
                 </label>
+
+                   <div class="split-person exact-person is-hidden">
+
+                    <label>Who Owes?</label>
+
+                    <select class="transaction-input split-person-select">
+
+                        ${options}
+
+                    </select>
+
+                    </div>
 
                 <input
                     class="transaction-input split-extra"
@@ -217,6 +228,18 @@ function getTransactionFormHtml(
                     Percentage Owed
 
                 </label>
+
+                <div class="split-person percentage-person is-hidden">
+
+                <label>Who Owes?</label>
+
+                <select class="transaction-input split-person-select">
+
+                    ${options}
+
+                </select>
+
+            </div>
 
                 <input
                     class="transaction-input split-extra"
@@ -250,6 +273,8 @@ function wireUpTransactionCard(card) {
     const radios = card.querySelectorAll('input[type="radio"]');
     const extras = card.querySelectorAll(".split-extra");
     const saveButton = card.querySelector(".save-button");
+    const exactPerson = card.querySelector(".exact-person");
+    const percentagePerson = card.querySelector(".percentage-person");
 
     radios.forEach(radio => {
 
@@ -264,6 +289,25 @@ function wireUpTransactionCard(card) {
                 radio.value === "percentage" && radio.checked
                     ? "block"
                     : "none";
+
+            const showRecipient =
+                getPeople().length > 2;
+
+            const showExactPerson =
+                radio.value === "exact"
+                && radio.checked
+                && showRecipient;
+
+            const showPercentagePerson =
+                radio.value === "percentage"
+                && radio.checked
+                && showRecipient;
+
+            exactPerson.style.display =
+                showExactPerson ? "block" : "none";
+
+            percentagePerson.style.display =
+                showPercentagePerson ? "block" : "none";
 
         });
 
@@ -294,11 +338,25 @@ function saveTransaction(card) {
     const splitExtras =
         card.querySelectorAll(".split-extra");
 
+    const personDropdowns =
+        card.querySelectorAll(".split-person-select");
+
     const exactAmount =
         parseFloat(splitExtras[0].value);
 
     const percentage =
         parseFloat(splitExtras[1].value);
+
+    const participantCount = getPeople().length
+
+    const splitPerson =
+    getPeople().length > 2
+        ? personDropdowns[
+            splitType === "exact" ? 0 : 1
+        ].selectedIndex
+        : getPeople().findIndex(
+            (_, index) => index !== paidBy
+        );
 
     //val
     if (title === "") {
@@ -366,6 +424,10 @@ function saveTransaction(card) {
                 ? percentage
                 : null;
 
+        existing.splitPerson = splitPerson;
+
+        existing.participantCount = participantCount;
+
         transaction = existing;
 
     }
@@ -383,6 +445,8 @@ function saveTransaction(card) {
 
             splitType,
 
+            participantCount,
+
             exactAmount:
                 splitType === "exact"
                     ? exactAmount
@@ -391,7 +455,9 @@ function saveTransaction(card) {
             percentage:
                 splitType === "percentage"
                     ? percentage
-                    : null
+                    : null,
+
+            splitPerson
 
         };
 
@@ -450,15 +516,254 @@ function wireUpSummary(card) {
 
 }
 
+//#endregion
+
+//#region Balance
+
+const balanceButton = document.getElementById("balanceButton");
+
+balanceButton.addEventListener(
+    "click",
+    calculateBalances
+);
+
 function calculateBalances(){
+
+    const balances = {};
     
-    const balances = {};    
+    const people = getPeople();
+
+    people.forEach(person => {
+
+        balances[person] = 0;
+
+    });
+
+    transactions.forEach(transaction => {
+        const payer = people[transaction.paidBy];
+
+        balances[payer] += transaction.amount;
+
+        const shares =
+        getTransactionShare(transaction);
+
+        Object.entries(shares)
+            .forEach(([person, share]) => {
+
+                balances[person] -= share;
+
+            });
+    });
+
+    const results =
+        Object.entries(balances)
+            .map(([person, balance]) => ({
+
+                person,
+
+                balance
+
+            }))
+            .sort((a, b) => b.balance - a.balance);
+
+    const settlements =
+    buildSettlements(results);
+
+    renderSettlements(settlements);
+
+    return settlements;
 
 }
 
-function getTransactionShare(transaction){
+function getTransactionShare(transaction) {
+
+    const people = getPeople();
+
+    const shares = {};
+
+    people.forEach(person => {
+
+        shares[person] = 0;
+
+    });
+
+    switch (transaction.splitType) {
+
+        case "half": {
+
+            const each =
+                transaction.amount /
+                transaction.participantCount;
+
+            people.forEach(person => {
+
+                shares[person] = each;
+
+            });
+
+            break;
+        }
+
+        case "exact": {
+
+            const recipient =
+                people[transaction.splitPerson];
+
+            shares[recipient] =
+                transaction.exactAmount;
+
+            shares[people[transaction.paidBy]] =
+                transaction.amount - transaction.exactAmount;
+
+            break;
+        }
+
+        case "percentage": {
+
+            const recipient =
+                people[transaction.splitPerson];
+
+            const share =
+                transaction.amount *
+                (transaction.percentage / 100);
+
+            shares[recipient] = share;
+
+            shares[people[transaction.paidBy]] =
+                transaction.amount - share;
+
+            break;
+        }
+
+    }
+
+    return shares;
 
 }
+
+function buildSettlements(results){
+        const creditors =
+            results.filter(x => x.balance > 0);
+
+        const debtors =
+            results.filter(x => x.balance < 0);
+
+        const settlements = [];
+
+        let creditorIndex = 0;
+        let debtorIndex = 0;
+
+        while(
+            creditorIndex < creditors.length &&
+            debtorIndex < debtors.length
+        ){
+            const creditor =
+                creditors[creditorIndex];
+
+            const debtor =
+                debtors[debtorIndex];
+
+            const amount =
+                Math.min(
+                    creditor.balance,
+                    Math.abs(debtor.balance)
+                );
+
+            settlements.push({
+
+                from: debtor.person,
+
+                to: creditor.person,
+
+                amount
+
+            });
+
+            creditor.balance -= amount;
+
+            debtor.balance += amount;
+
+            if(creditor.balance < 0.01)
+                creditorIndex++;
+
+            if(Math.abs(debtor.balance) < 0.01)
+                debtorIndex++;
+        }
+
+        return settlements;
+}
+
+function renderSettlements(settlements) {
+
+    const panel =
+        document.getElementById("settlementPanel");
+
+    panel.innerHTML =
+        getSettlementHtml(settlements);
+
+    panel.classList.remove("is-hidden");
+
+}
+
+function getSettlementHtml(settlements) {
+
+    if (settlements.length === 0) {
+
+        return `
+            <h2>Settlement</h2>
+
+            <p>
+                🎉 Everyone is square.
+            </p>
+        `;
+
+    }
+
+    const rows =
+        settlements.map(settlement => `
+
+            <div class="settlement-row">
+
+                <strong>
+
+                    ${settlement.from}
+
+                </strong>
+
+                owes
+
+                <strong>
+
+                    ${settlement.to}
+
+                </strong>
+
+                <span>
+
+                    £${settlement.amount.toFixed(2)}
+
+                </span>
+
+            </div>
+
+        `).join("");
+
+    return `
+
+        <h2>
+
+            <i class="fa-solid fa-scale-balanced"></i>
+
+            Settlement
+
+        </h2>
+
+        ${rows}
+
+    `;
+
+}
+
 //#endregion
 
 //#region Rendering
@@ -477,23 +782,25 @@ function getEmptyTransactionSummaryHtml() {
 function getTransactionSummaryHtml(transaction) {
 
     const personName = getPeople()[transaction.paidBy];
+    const people = getPeople();
+    const recipient = people[transaction.splitPerson];
 
     let splitDescription;
 
     switch (transaction.splitType) {
 
         case "half":
-            splitDescription = "50 / 50";
+            splitDescription = "Even Split";
             break;
 
         case "exact":
             splitDescription =
-                `£${transaction.exactAmount.toFixed(2)} owed`;
+        `${recipient} owes £${transaction.exactAmount.toFixed(2)}`;
             break;
 
         case "percentage":
             splitDescription =
-                `${transaction.percentage}% owed`;
+        `${recipient} owes ${transaction.percentage}%`;
             break;
 
     }

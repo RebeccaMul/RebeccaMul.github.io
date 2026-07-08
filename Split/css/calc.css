@@ -434,6 +434,38 @@ button:disabled{
 
 }
 
+.settlement-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px 0;
+
+    border-bottom:1px solid rgba(77,155,146,.15);
+
+}
+
+.settlement-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.settlement-row span{
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:var(--accent-dark);
+
+}
+
 @media (max-width:900px){
 
     .layout{
