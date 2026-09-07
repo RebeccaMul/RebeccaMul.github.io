@@ -120,7 +120,7 @@ body {
   }
 }
 
-#supabaseItems {
+#wardrobeItems {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
@@ -131,7 +131,7 @@ body {
   animation-fill-mode: forwards;
 }
 
-#supabaseItems,
+#wardrobeItems,
 .wardrobe-title {
   position: relative;
   z-index: 1;
@@ -156,7 +156,7 @@ body {
 
 
 @media (max-width: 600px) {
-  #supabaseItems {
+  #wardrobeItems {
     grid-template-columns: 1fr;
     padding: 1rem;
   }
