@@ -1,32 +1,39 @@
-name: Backup Supabase Wardrobe
+name: Backup D1 Wardrobe
 
 on:
   schedule:
     - cron: '0 8 * * 1'  # Every Monday at 08:00 UTC
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   backup:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Fetch data from Supabase
+      - name: Export D1 wardrobe
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          curl -X GET "https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?select=*" \
-            -H "apikey: ${{ secrets.SUPABASE_API_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -o wardrobe-backup.json
+          npx wrangler@latest d1 export wardrobe \
+            --remote \
+            --output=wardrobe-backup.sql
 
       - name: Commit backup file
         run: |
           mkdir -p backups
           timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
-          mv wardrobe-backup.json backups/wardrobe_backup_$timestamp.json
+          mv wardrobe-backup.sql backups/wardrobe_backup_$timestamp.sql
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add backups/
-          git commit -m "🧵 Wardrobe backup $timestamp"
+          git commit -m "🧵 Wardrobe D1 backup $timestamp"
           git push
