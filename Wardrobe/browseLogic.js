@@ -1,52 +1,47 @@
-  const itemsContainer = document.getElementById('supabaseItems');
-  const loader = document.getElementById('loader');
-  const pageIndicator = document.getElementById('pageIndicator');
-  const prevButton = document.getElementById('prevPage');
-  const nextButton = document.getElementById('nextPage');
-  const title = document.querySelector('.wardrobe-title');
+const itemsContainer = document.getElementById('wardrobeItems');
+const loader = document.getElementById('loader');
+const pageIndicator = document.getElementById('pageIndicator');
+const prevButton = document.getElementById('prevPage');
+const nextButton = document.getElementById('nextPage');
+const title = document.querySelector('.wardrobe-title');
 
-  let allItems = [];
-  let currentPage = 1;
-  const itemsPerPage = 9;
-  let filteredItems = [];
+let allItems = [];
+let currentPage = 1;
+const itemsPerPage = 9;
+let filteredItems = [];
 
-  fetch('https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe', {
-    headers: {
-      apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
-      'Content-Type': 'application/json'
-    }
-  })
+fetch('https://silent-tree-4c97.rebecca-mulholland.workers.dev/items')
   .then(res => res.json())
   .then(data => {
     if (data.length) {
-      allItems = data.filter(item => item.name !== 'DUD ENTRY');
+      allItems = data;
       const categorySelect = document.getElementById('filterCategory');
-const subcategorySelect = document.getElementById('filterSubcategory');
+      const subcategorySelect = document.getElementById('filterSubcategory');
 
-const categories = [...new Set(allItems.map(item => item.category))].filter(Boolean).sort();
-categorySelect.innerHTML += categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+      const categories = [...new Set(allItems.map(item => item.category))].filter(Boolean).sort();
+      categorySelect.innerHTML += categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
 
-// Enable subcategory on category change
-categorySelect.addEventListener('change', () => {
-  const selected = categorySelect.value;
-  subcategorySelect.disabled = !selected;
+      // Enable subcategory on category change
+      categorySelect.addEventListener('change', () => {
+        const selected = categorySelect.value;
+        subcategorySelect.disabled = !selected;
 
-  if (selected) {
-    const subcats = [...new Set(allItems
-      .filter(i => i.category === selected)
-      .map(i => i.subcategory)
-    )].filter(Boolean).sort();
+        if (selected) {
+          const subcats = [...new Set(allItems
+            .filter(i => i.category === selected)
+            .map(i => i.subcategory)
+          )].filter(Boolean).sort();
 
-    subcategorySelect.innerHTML = `<option value="">Subcategory</option>` +
-      subcats.map(s => `<option value="${s}">${s}</option>`).join('');
-  } else {
-    subcategorySelect.innerHTML = `<option value="">Subcategory</option>`;
-  }
+          subcategorySelect.innerHTML = `<option value="">Subcategory</option>` +
+            subcats.map(s => `<option value="${s}">${s}</option>`).join('');
+        } else {
+          subcategorySelect.innerHTML = `<option value="">Subcategory</option>`;
+        }
 
-  applyFilters();
-});
+        applyFilters();
+      });
 
-subcategorySelect.addEventListener('change', applyFilters);
+      subcategorySelect.addEventListener('change', applyFilters);
 
       applyFilters();
     } else {
@@ -76,14 +71,14 @@ nextButton.addEventListener('click', () => {
   }
 });
 
-    const toggleBtn = document.getElementById('themeToggle');
-  toggleBtn.addEventListener('click', () => {
-    const isCandle = document.body.getAttribute('data-theme') === 'candlelit';
-    document.body.setAttribute('data-theme', isCandle ? '' : 'candlelit');
-    toggleBtn.textContent = isCandle ? '🕯️' : '🌙';
-  });
+const toggleBtn = document.getElementById('themeToggle');
+toggleBtn.addEventListener('click', () => {
+  const isCandle = document.body.getAttribute('data-theme') === 'candlelit';
+  document.body.setAttribute('data-theme', isCandle ? '' : 'candlelit');
+  toggleBtn.textContent = isCandle ? '🕯️' : '🌙';
+});
 
-  document.getElementById('themeToggle').addEventListener('click', () => {
+document.getElementById('themeToggle').addEventListener('click', () => {
   document.body.classList.toggle('candlelit');
   const isCandlelit = document.body.classList.contains('candlelit');
   document.getElementById('themeToggle').setAttribute('data-lit', isCandlelit);
@@ -290,13 +285,17 @@ itemsContainer.addEventListener('click', async (e) => {
     if (!confirmed) return;
 
     try {
-      await fetch(`https://viaecfkrsnraazgsmdet.supabase.co/rest/v1/wardrobe?id=eq.${id}`, {
-        method: 'DELETE',
-        headers: {
-      apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpYWVjZmtyc25yYWF6Z3NtZGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0OTk2MzAsImV4cCI6MjA2NTA3NTYzMH0.uuj2PoKfN5-D7GQc363vYWo5kWLxkLbKDUSWSjr9n1k',
-      'Content-Type': 'application/json'
+      const deleteRes = await fetch(
+        `https://silent-tree-4c97.rebecca-mulholland.workers.dev/items/${id}`,
+        {
+          method: 'DELETE'
         }
-      });
+      );
+
+      if (!deleteRes.ok) {
+        const errorText = await deleteRes.text();
+        throw new Error(errorText);
+      }
 
       allItems = allItems.filter(item => item.id != id);
       applyFilters();
