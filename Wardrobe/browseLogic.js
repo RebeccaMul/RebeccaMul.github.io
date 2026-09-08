@@ -9,6 +9,26 @@ let allItems = [];
 let currentPage = 1;
 const itemsPerPage = 9;
 let filteredItems = [];
+let adminMode = false;
+
+function getWardrobeAdminKey() {
+  let key = localStorage.getItem("wardrobeAdminKey");
+
+  if (!key) {
+    key = prompt("Wardrobe admin key:");
+
+    if (key) {
+      localStorage.setItem("wardrobeAdminKey", key);
+    }
+  }
+
+  return key;
+}
+
+if (wardrobeRes.status === 401) {
+  localStorage.removeItem("wardrobeAdminKey");
+  throw new Error("Incorrect wardrobe admin key.");
+}
 
 fetch('https://silent-tree-4c97.rebecca-mulholland.workers.dev/items')
   .then(res => res.json())
@@ -144,7 +164,7 @@ function renderFiltered(filteredItems) {
     <div class="item-category">${item.category}</div>
     <div class="item-brand">
       ${item.brand}
-      ${item.zone === "Danger" ? `<span class="danger-icon">⚰️</span>` : ""}
+      ${item.zone === "Danger Zone" ? `<span class="danger-icon">⚰️</span>` : ""}
     </div>
   </div>
   `).join('');
@@ -268,8 +288,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
-let adminMode = false;
-
 document.getElementById('adminToggle').addEventListener('click', () => {
   adminMode = !adminMode;
   document.body.classList.toggle('admin-mode', adminMode);
@@ -288,9 +306,17 @@ itemsContainer.addEventListener('click', async (e) => {
       const deleteRes = await fetch(
         `https://silent-tree-4c97.rebecca-mulholland.workers.dev/items/${id}`,
         {
-          method: 'DELETE'
+          method: "DELETE",
+          headers: {
+            "X-Wardrobe-Key": getWardrobeAdminKey()
+          }
         }
       );
+
+      if (wardrobeRes.status === 401) {
+        localStorage.removeItem("wardrobeAdminKey");
+        throw new Error("Incorrect wardrobe admin key.");
+      }
 
       if (!deleteRes.ok) {
         const errorText = await deleteRes.text();
