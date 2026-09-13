@@ -54,6 +54,12 @@ categorySelect.addEventListener('change', () => {
 document.getElementById('wardrobeForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
+    const adminKey = getWardrobeAdminKey();
+
+    if (!adminKey) {
+        return;
+    }
+
     const form = e.target;
     const formData = new FormData(form);
     const submitButton = form.querySelector('button[type="submit"]');
@@ -95,7 +101,7 @@ document.getElementById('wardrobeForm').addEventListener('submit', async functio
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Wardrobe-Key": getWardrobeAdminKey()
+                "X-Wardrobe-Key": adminKey
                 },
                 body: JSON.stringify({
                     name: formData.get("name"),
@@ -113,15 +119,16 @@ document.getElementById('wardrobeForm').addEventListener('submit', async functio
             }
         );
 
-        if (wardrobeRes.status === 401) {
-            localStorage.removeItem("wardrobeAdminKey");
-            throw new Error("Incorrect wardrobe admin key.");
-        }
+    if (wardrobeRes.status === 401) {
+        localStorage.removeItem("wardrobeAdminKey");
+        alert("Incorrect wardrobe admin key. Please try again.");
+        return;
+    }
 
-        if (!wardrobeRes.ok) {
-            const errorText = await wardrobeRes.text();
-            throw new Error(errorText);
-        }
+    if (!wardrobeRes.ok) {
+        const errorText = await wardrobeRes.text();
+        throw new Error(errorText);
+    }
 
         alert('Wardrobe item submitted!');
         form.reset();
