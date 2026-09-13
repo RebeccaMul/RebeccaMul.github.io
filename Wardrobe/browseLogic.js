@@ -25,11 +25,6 @@ function getWardrobeAdminKey() {
   return key;
 }
 
-if (wardrobeRes.status === 401) {
-  localStorage.removeItem("wardrobeAdminKey");
-  throw new Error("Incorrect wardrobe admin key.");
-}
-
 fetch('https://silent-tree-4c97.rebecca-mulholland.workers.dev/items')
   .then(res => res.json())
   .then(data => {
@@ -313,7 +308,7 @@ itemsContainer.addEventListener('click', async (e) => {
         }
       );
 
-      if (wardrobeRes.status === 401) {
+      if (deleteRes.status === 401) {
         localStorage.removeItem("wardrobeAdminKey");
         throw new Error("Incorrect wardrobe admin key.");
       }
